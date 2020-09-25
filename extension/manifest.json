@@ -1,0 +1,17 @@
+{
+	"manifest_version": 2,
+	"name": "Trawler",
+	"version": "1.0",
+	"description": "An antiphishing firefox extension",
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "Trawler@github.com/melbing1/Trawler.com"
+		}
+	},
+	"content_script": [
+		{
+		"matches": ["*://*.*.*/*"],
+		"js": ["main.js"]
+		}
+	]
+}
