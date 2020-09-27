@@ -3,10 +3,10 @@
 	"name": "Trawler",
 	"version": "1.0",
 	"description": "An antiphishing firefox extension",
-	"content_script": [
+	"content_scripts": [
 		{
-		"matches": ["*://*.*.*/*"],
-		"js": ["main.js"]
+		"matches": ["<all_urls>"],
+		"js": ["whoIsQueryAndParse.js"]
 		}
 	]
 }
