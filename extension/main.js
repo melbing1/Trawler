@@ -20,8 +20,6 @@ function validate(domain){
 }
 
 
-
-
 function getRegistrationOf(domain) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
