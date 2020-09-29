@@ -2,6 +2,6 @@
   "name": "extension",
   "version": "1.0.0",
   "dependencies": {
-    
+    "mocha": "^8.1.3"
   }
 }
