@@ -5,7 +5,7 @@ be placed elsewhere.
 main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
  */
-
+console.log("hello world");
 /*
     Example of Usage
     validate("apple.com")
