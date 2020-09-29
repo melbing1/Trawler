@@ -5,7 +5,8 @@ be placed elsewhere.
 main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
  */
-alert("Hello World, This is more text");
+console.log("hello world");
+console.log("Hello world also");
 /*
     Example of Usage
     validate("apple.com")
