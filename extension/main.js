@@ -19,7 +19,13 @@ function validate(domain){
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
 }
 
+/*
+Args: Domain -> A domain in standard form 
+Return: registrant of domain
 
+Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
+
+*/
 function getRegistrationOf(domain) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
@@ -34,7 +40,19 @@ function getRegistrationOf(domain) { //Gets JSON data about a domain from the pu
             handleRequestRejection() //Gracefully handle API access issues
         }
     }
-    request.send() //Request data
+    request.send() //Request data via get query
+}
+
+/*
+    Trim domain wrapping units which are unnessaray
+    Args: url -> A full URL
+    Return: domain -> A domain string (domain.tld)
+
+    For example: "https://www.apple.com/mac/" should become "apple.com" 
+*/
+function trimDomain(url){
+    let domain = url; //PLACEHOLDER
+    return domain
 }
 
 function handleRequestRejection(status, jsonData){ //Error handler for WHOIS requests
