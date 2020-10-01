@@ -38,7 +38,7 @@ function getRegistrationOf(domain) { //Gets JSON data about a domain from the pu
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
         let registrant = rawJson.registrant.organization; //Get the registrant orange
 
-        if (registrant === null || registrant === ""){ //Ensure that the request was successful
+        if (registrant === null || registrant === "" && registrant === " ") { //Ensure that the request was successful
             handleRequestRejection() //Gracefully handle API access issues
         }
     }
