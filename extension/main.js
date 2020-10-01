@@ -6,7 +6,6 @@ main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
  */
 
- alert("Hello world, this is some text"); //Remove once your environment is set up
 
 /*
     Example of Usage
