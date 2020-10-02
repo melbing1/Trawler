@@ -10,10 +10,7 @@ Building Artifacts:
 2. Run `web-ext build -a "artifacts"`
     
     3. If this is the first time you run this command a directory called artifacts will be created /Trawler/extension/artifacts/
-
 4. A file will created in the Trawler/extension/artifacts that ends in .zip
-
 5. Rename this file to end with .xip instead of .zip.
-
 6. This can now be installed as a standard firefox extension
     Note that this will only work in firefox dev edition since this artifact is not signed by Mozilla
