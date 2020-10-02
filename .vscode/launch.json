@@ -8,5 +8,5 @@
         "file": "${workspaceFolder}/index.html",
         "addonPath": "${workspaceFolder}/extension"
     }
-    ]
+]
 }
