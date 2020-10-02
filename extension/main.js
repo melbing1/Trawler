@@ -20,13 +20,10 @@ function validate(domain){
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
 }
 
-/*
-Args: Domain -> A domain in standard form 
-Return: registrant of domain
-
-Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
-
-*/
+/**
+ * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
+ * @param {*} domain The domain which is to be used to build a WHOIS API query. 
+ */
 function getRegistrationOf(domain) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
@@ -38,7 +35,7 @@ function getRegistrationOf(domain) { //Gets JSON data about a domain from the pu
         let registrant = rawJson.registrant.organization; //Get the registrant orange
 
         if (registrant === null || registrant === "" && registrant === " ") { //Ensure that the request was successful
-            handleRequestRejection() //Gracefully handle API access issues
+            handleRequestRejection(request.status, rawJson); //Gracefully handle API access issues
         }
     }
     request.send() //Request data via get query
@@ -56,7 +53,25 @@ function trimDomain(url){
     return domain
 }
 
-function handleRequestRejection(status, jsonData){ //Error handler for WHOIS requests
+/**
+ * @description Gracefully handle failed API requests
+ * @param {number} status The HTTP GET status string 
+ * @param {JSON} jsonData The raw JSON data of the request if it exists.
+ */
+function handleRequestRejection(status, jsonData) { //Error handler for WHOIS requests
+    //The API is down or unreachable
+    if (status == 404) { 
+        alertUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
+        console.log("API was unreachable")
+        return
+    }
+    if (jsonData == null || jsonData.toString == "")
+        alertUser("Corrupt API Responce", "The json data is not available or was corrupted in transit", true);
+    
+
+
+
+    console.log(status.status)
     //PLACEHOLDER ERROR HANDLING
     console.log("Failed to get registration data");
     console.log("Request Status: " + status);
@@ -92,4 +107,15 @@ function suggest(registrant){
     Create suggestion for correct URL and display it to the user
      */
     return null;
+}
+
+
+/**
+ * @description Provide the user with an error message informing them of a non-critical error
+ * @param {string} title The title of the alert for the user
+ * @param {string} msg The message to display to the user
+ * @param {boolean} type The way in which the user is alerted where true indicates a subtle alert and false indicates an obtrusive alert
+ */
+function alertUser(title, msg, type){
+    alert(msg)
 }
