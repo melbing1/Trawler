@@ -6,6 +6,7 @@ main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
  */
 
+ alert("THis is a test");
 
 /*
     Example of Usage
