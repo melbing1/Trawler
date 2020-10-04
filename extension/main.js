@@ -119,3 +119,17 @@ function suggest(registrant){
 function alertUser(title, msg, type){
     alert(msg)
 }
+
+/*
+* Example testing function
+*/
+function add(x,y){
+    return x + y;
+}
+/*
+* NOTE: exported for testing purposes only
+*/
+exports.getRegistrationOf = getRegistrationOf;
+
+//Example export for testing
+exports.add = add;
