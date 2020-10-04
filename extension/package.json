@@ -2,10 +2,12 @@
   "name": "extension",
   "version": "1.0.0",
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "setupTestFrameworkScriptFile": "./tests/setup.js"
   },
   "dependencies": {
-    "eslint": "^7.10.0"
+    "eslint": "^7.10.0",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
