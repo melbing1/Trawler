@@ -12,6 +12,11 @@ main.js
     validate("apple.com")
         Do not include http/https or www etc.
 */
+
+//var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+console.log(getRegistrationOf("apple.com"));
+
 function validate(domain){
     checkWhiteList(domain); //Check the domain against the whitelist
     checkBlackList(domain); //Check the domain against the blacklist
@@ -23,23 +28,35 @@ function validate(domain){
 /**
  * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
  * @param {*} domain The domain which is to be used to build a WHOIS API query. 
+ * @param {function} successCallback Called on async success
+ * @param {function} FailureCallback Called on aysnc failure
  */
-function getRegistrationOf(domain) { //Gets JSON data about a domain from the public record
+function getRegistrationOf(domain, successCallback, FailureCallback) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    request.open("GET", completeUrl, true); //Open an https connection for the given constructed URL
+
+    request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The API data loaded
         //Read the JSON response from the API within this function
 
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
-        let registrant = rawJson.registrant.organization; //Get the registrant orange
+        let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
+        
+        if (request.status === 200) return successCallback(registrant); //Return registrant organizion if we get an OK from the get request
+        else handleRequestRejection(request.status, rawJson);
 
-        if (registrant === null || registrant === "" && registrant === " ") { //Ensure that the request was successful
+        /* if (registrant === null || registrant === "" || registrant === " " || registrant === undefined) { //Ensure that the request was successful
             handleRequestRejection(request.status, rawJson); //Gracefully handle API access issues
-        }
+        } */
     }
     request.send() //Request data via get query
 }
+
+//Success callback
+function successfulApiCallback(registrant){
+    return registrant
+}
+
 
 /*
     Trim domain wrapping units which are unnessaray
@@ -54,7 +71,7 @@ function trimDomain(url){
 }
 
 /**
- * @description Gracefully handle failed API requests
+ * @description Gracefully handle failed API requests. Failed callback for getRegistrationOf(domain)
  * @param {number} status The HTTP GET status string 
  * @param {JSON} jsonData The raw JSON data of the request if it exists.
  */
@@ -123,13 +140,18 @@ function alertUser(title, msg, type){
 /*
 * Example testing function
 */
+/*
 function add(x,y){
     return x + y;
 }
+*/
+
 /*
 * NOTE: exported for testing purposes only
 */
-exports.getRegistrationOf = getRegistrationOf;
+//exports.getRegistrationOf = getRegistrationOf;
+//exports.successfulApiCallback = successfulApiCallback;
+//exports.handleRequestRejection = handleRequestRejection;
 
 //Example export for testing
-exports.add = add;
+//exports.add = add;
