@@ -99,5 +99,15 @@ function updateLocalWhiteList(domain){
 }
 
 function updateLocalBlacklist(domain){
+
+}
     
+/**
+ * @description Provide the user with an error message informing them of a non-critical error
+ * @param {string} title The title of the alert for the user
+ * @param {string} msg The message to display to the user
+ * @param {boolean} type The way in which the user is alerted where true indicates a subtle alert and false indicates an obtrusive alert
+ */
+function alertUser(title, msg, type){
+    alert(msg)
 }
