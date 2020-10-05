@@ -93,3 +93,11 @@ function suggest(registrant){
      */
     return null;
 }
+
+function updateLocalWhiteList(domain){
+
+}
+
+function updateLocalBlacklist(domain){
+    
+}
