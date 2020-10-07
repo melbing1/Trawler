@@ -15,7 +15,7 @@ main.js
 
 //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-console.log(getRegistrationOf("apple.com"));
+getRegistrationOf("apple.com", "Apple.com", WhoisDataProcessing, handleRequestRejection);
 
 function validate(domain){
     checkWhiteList(domain); //Check the domain against the whitelist
@@ -27,11 +27,12 @@ function validate(domain){
 
 /**
  * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
- * @param {*} domain The domain which is to be used to build a WHOIS API query. 
+ * @param {string} domain The domain in standardardized format which is to be used to build a WHOIS API query.
+ * @param {string} compareTo The suspected domain registrant
  * @param {function} successCallback Called on async success
  * @param {function} FailureCallback Called on aysnc failure
  */
-function getRegistrationOf(domain, successCallback, FailureCallback) { //Gets JSON data about a domain from the public record
+function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
 
@@ -42,19 +43,29 @@ function getRegistrationOf(domain, successCallback, FailureCallback) { //Gets JS
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
         let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
         
-        if (request.status === 200) return successCallback(registrant); //Return registrant organizion if we get an OK from the get request
-        else handleRequestRejection(request.status, rawJson);
+        if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
+        else failure(request.status, rawJson);
 
-        /* if (registrant === null || registrant === "" || registrant === " " || registrant === undefined) { //Ensure that the request was successful
+        /* 
+        if (registrant === null || registrant === "" || registrant === " " || registrant === undefined) { //Ensure that the request was successful
             handleRequestRejection(request.status, rawJson); //Gracefully handle API access issues
-        } */
+        } 
+        */
     }
     request.send() //Request data via get query
 }
 
-//Success callback
-function successfulApiCallback(registrant){
-    return registrant
+/*
+    Callback function for the whois asychronous execution where the api data (when and if received) is processed
+    IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
+*/
+function WhoisDataProcessing(registrant, compareTo){
+    /*
+
+    */
+    console.log(registrant);
+    if (registrant == compareTo)
+    return registrant;
 }
 
 
@@ -65,6 +76,7 @@ function successfulApiCallback(registrant){
 
     For example: "https://www.apple.com/mac/" should become "apple.com" 
 */
+
 function trimDomain(url){
     let domain = url; //PLACEHOLDER
     return domain
