@@ -4,17 +4,17 @@
 
 const main = require('../main');
 
-test("Checks that Apple Inc is returned for the registrant of Apple.com", done => {
-    function successfulApiCallback(data) {
+test("Apple inc registered Apple.com", done => {
+    function callback(data) {
         try {
-            expect(data).toBe('Apple Inc')
+            expect(data).toBe('"Apple Inc."')
             done();
         } catch (error) {
             done(error);
         }
     }
 
-    main.getRegistrationOf("apple.com", main.successfulApiCallback, main.handleRequestRejection);
+    main.getRegistrationOf("apple.com", "Apple Inc", callback, main.handleRequestRejection);
 });
 
 //Example of 'jest' unit test

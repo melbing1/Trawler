@@ -13,7 +13,7 @@ main.js
         Do not include http/https or www etc.
 */
 
-//var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 getRegistrationOf("apple.com", "Apple.com", WhoisDataProcessing, handleRequestRejection);
 
@@ -42,9 +42,10 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
         let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
-        
+        registrant = registrant.trim(".");
         if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
-        else failure(request.status, rawJson);
+        else failure(request.status, rawJson); 
+        return;
 
         /* 
         if (registrant === null || registrant === "" || registrant === " " || registrant === undefined) { //Ensure that the request was successful
@@ -63,9 +64,8 @@ function WhoisDataProcessing(registrant, compareTo){
     /*
 
     */
-    console.log(registrant);
-    if (registrant == compareTo)
-    return registrant;
+    //console.log(registrant);
+    return registrant == compareTo;
 }
 
 
@@ -100,11 +100,11 @@ function handleRequestRejection(status, jsonData) { //Error handler for WHOIS re
 
 
 
-    console.log(status.status)
+    /*console.log(status.status)
     //PLACEHOLDER ERROR HANDLING
     console.log("Failed to get registration data");
     console.log("Request Status: " + status);
-    console.log("Request Response JSON: " + jsonData);
+    console.log("Request Response JSON: " + jsonData); */
 }
 
 /*
@@ -161,9 +161,9 @@ function add(x,y){
 /*
 * NOTE: exported for testing purposes only
 */
-//exports.getRegistrationOf = getRegistrationOf;
-//exports.successfulApiCallback = successfulApiCallback;
-//exports.handleRequestRejection = handleRequestRejection;
+exports.getRegistrationOf = getRegistrationOf;
+exports.WhoisDataProcessing = WhoisDataProcessing;
+exports.handleRequestRejection = handleRequestRejection;
 
 //Example export for testing
 //exports.add = add;
