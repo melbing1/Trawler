@@ -42,7 +42,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
         let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
-        registrant = registrant.trim(".");
+        registrant = registrant.trim("."); //TODO This line does not work as expected, the period still persists
         if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
         else failure(request.status, rawJson); 
         return;
