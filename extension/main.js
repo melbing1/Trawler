@@ -101,7 +101,7 @@ function handleRequestRejection(status, jsonData) { //Error handler for WHOIS re
         return
     }
     if (jsonData == null || jsonData.toString == "")
-        alertUser("Corrupt API Responce", "The json data is not available or was corrupted in transit", true);
+        alertUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
     
 
 
@@ -152,7 +152,7 @@ function suggest(registrant){
  * @param {boolean} type The way in which the user is alerted where true indicates a subtle alert and false indicates an obtrusive alert
  */
 function alertUser(title, msg, type){
-    alert(msg)
+    alert(msg);
 }
 
 /*
@@ -165,7 +165,7 @@ function add(x,y){
 */
 
 /*
-* NOTE: exported for testing purposes only
+* NOTE: export for testing purposes only
 */
 exports.getRegistrationOf = getRegistrationOf;
 exports.WhoisDataProcessing = WhoisDataProcessing;
