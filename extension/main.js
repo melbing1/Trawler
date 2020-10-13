@@ -4,14 +4,21 @@ be placed elsewhere.
 
 main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
- */
 
-
-/*
     Example of Usage
     validate("apple.com")
         Do not include http/https or www etc.
 */
+
+/*
+Demo Functions:
+
+validate("Apple.com");
+validate("mozilla.org");
+validate("hofstra.edu");
+*/
+
+
 function validate(domain){
     checkWhiteList(domain); //Check the domain against the whitelist
     checkBlackList(domain); //Check the domain against the blacklist
