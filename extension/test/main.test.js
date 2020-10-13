@@ -7,14 +7,40 @@ const main = require('../main');
 test("Apple inc registered Apple.com", done => {
     function callback(data) {
         try {
-            expect(data).toBe('"Apple Inc."')
+            expect(data).toBe('apple')
             done();
         } catch (error) {
             done(error);
         }
     }
 
-    main.getRegistrationOf("apple.com", "Apple Inc", callback, main.handleRequestRejection);
+    main.getRegistrationOf("apple.com", "apple", callback, main.handleRequestRejection);
+});
+
+test("Google registered google.com", done => {
+    function callback(data) {
+        try {
+            expect(data).toBe('google')
+            done();
+        } catch (error) {
+            done(error);
+        }
+    }
+
+    main.getRegistrationOf("google.com", "google", callback, main.handleRequestRejection);
+});
+
+test("Hofstra registered hofstra.edu", done => {
+    function callback(data) {
+        try {
+            expect(data).toBe('hofstra')
+            done();
+        } catch (error) {
+            done(error);
+        }
+    }
+
+    main.getRegistrationOf("hofstra.edu", "hofstra", callback, main.handleRequestRejection);
 });
 
 //Example of 'jest' unit test

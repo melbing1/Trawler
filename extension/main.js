@@ -32,7 +32,7 @@ function validate(domain){
 function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    let incorporation = ["llc", "inc", "corp"]; //TODO: Extend this list if nessasary
+    let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
 
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The API data loaded
@@ -40,12 +40,14 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
         let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
-        registrant = registrant.replace(/\.+$/, ""); //Regex to remove all periods from a string including the last one
-        
+        registrant = registrant.toString().toLowerCase();
+        registrant = registrant.replace(".", ""); //Regex to remove all periods from a string including the last one
+        registrant = registrant.replace(new RegExp(/\"/g), "");
         //Checks to the existence of legal incorporation symbols and removes them from the domain string
-        //For example: 'Apple Inc' -> "Apple"
+        //For example: 'apple Inc' -> "apple"
+        //Currently this is broken for an unknown reason
         for (var i = 0; i < incorporation.length; i++) {
-         if (registrant.includes(incorporation[i])) registrant.replace(incorporation[i], "");
+         if (registrant.toString().includes(incorporation[i])) registrant.split(incorporation[i]).join("");
         }
 
         if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
