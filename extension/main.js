@@ -4,10 +4,7 @@ be placed elsewhere.
 
 main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
- */
 
-
-/*
     Example of Usage
     validate("apple.com")
         Do not include http/https or www etc.
@@ -48,15 +45,15 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
         //Checks to the existence of legal incorporation symbols and removes them from the domain string
         //For example: 'Apple Inc' -> "Apple"
         for (var i = 0; i < incorporation.length; i++) {
-            if (registrant.includes(incorporation[i])) registrant.replace(incorporation[i], "");
+         if (registrant.includes(incorporation[i])) registrant.replace(incorporation[i], "");
         }
 
-
         if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
-        else failure(request.status, rawJson); 
+        else failure(request.status, rawJson); //Call the handleRequestRejection function to alert the system (and user if needed) about the API issue
         return;
 
         /* 
+        This code should probably be deprecated as there is no good reason to handle edge cases here for both reliability and testing reasons.
         if (registrant === null || registrant === "" || registrant === " " || registrant === undefined) { //Ensure that the request was successful
             handleRequestRejection(request.status, rawJson); //Gracefully handle API access issues
         } 
