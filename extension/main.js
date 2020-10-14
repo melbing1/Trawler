@@ -48,12 +48,12 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
         //Currently this is broken for an unknown reason
         for (var i = 0; i < incorporation.length; i++) {
          if (registrant.toString().includes(incorporation[i])){
-             //This IF block is being hit at the correct time, the replacement is broken
+             //This IF block is being hit at the correct time, but the replacement part is broken
             registrant.split(incorporation[i]).join("");
             console.log(registrant);
          }
          else {
-             console.log("else branch");
+             //console.log("else branch");
          }
         }
 
