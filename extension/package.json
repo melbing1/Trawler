@@ -2,7 +2,14 @@
   "name": "extension",
   "version": "1.0.0",
   "dependencies": {
+    "browserify": "^17.0.0",
     "eslint": "^7.10.0",
-    "mocha": "^8.1.3"
+    "mocha": "^8.1.3",
+    "mysql": "^2.18.1",
+    "string-similarity": "^4.0.2",
+    "web-ext": "^5.1.0"
+  },
+  "scripts": {
+    "build": "browserify main.js -o bundle.js"
   }
 }

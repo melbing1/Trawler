@@ -3,11 +3,11 @@ Main Extension JS file. Most of the js extension code will be within this file u
 be placed elsewhere.
 
 main.js
-(c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
+(c) Matthew Elbing, John Ramirez, 2020
  */
 
-// Hardcoded phishing site database (Only 100 entries for demo)
-const websiteData = [
+// Hardcoded phishing site database (100 entries)
+const maliciousData = [
     {
         "domainId": 1,
         "domain": "001return.com"
@@ -410,6 +410,8 @@ const websiteData = [
     }
 ]
 
+var stringSimilarity = require('string-similarity');
+
 /*
     Example of Usage
     validate("apple.com")
@@ -475,27 +477,27 @@ function checkWhiteList(domain){
 
 /*
     Check domain against known phishing domains.
-    Args: domainToCheck -> A domain in string format
+    Args: domain -> A domain in string format
     Return: The matched domain in string format or null if not found
  */
-function checkBlackList(domainToCheck){
+function checkBlackList(domain){
     /*
-      const websiteData is the malicious domain database in JSON format.
-      To access a specific entry use: websiteData[n], where n = entry number.
+      const maliciousData is the malicious domain database in JSON format.
+      To access a specific entry use: maliciousData[n], where n = entry number.
       The domainId or domain for that entry can be accessed via: 
-      websiteData[n].domainId OR websiteData[n].domain
+      maliciousData[n].domainId OR maliciousData[n].domain
     */
 
     /*
       For every entry in the database, check to see if the provided domain
       matches the entry.
     */
-    for (var entry in websiteData){
-        if (domainToCheck == websiteData[entry].domain){
+    for (var entry in maliciousData){
+        if (domain == maliciousData[entry].domain){
             console.log('Matched domain: ' + entry);
 
             //Return the matched domain string.
-            return websiteData[entry].domain;
+            return maliciousData[entry].domain;
         }
     }
     return null;
@@ -505,7 +507,28 @@ function checkBlackList(domainToCheck){
     Check the domain against the known domains list for similarity
  */
 function similarityCheck(domain){
-    return ""; //Return most similar domain
+    var similarityValue;
+
+    // For every entry in the phishing sites list
+    for (var entry in maliciousData){
+
+        //Perform a similarity check on the domain that was passed in and current entry in the database
+        similarityValue = stringSimilarity.compareTwoStrings(domain, maliciousData[entry].domain);
+
+        /* 
+        Value returned is a decimal between [0,1].
+        If the returned value is greater than 0.8
+        (meaning they are very similar), suggest domain 
+        to the user.
+        */
+        if (similarityValue > 0.8){
+            console.log('Did you mean to go to: ' + maliciousData[entry].domain + '?');
+            return maliciousData[entry].domain;
+        }
+    }
+    //Notify user if no similar domain is found
+    console.log('No similar domains found.');
+    return null;
 }
 
 /*
@@ -520,3 +543,4 @@ function suggest(registrant){
 
 var myDomain = "001return.com";
 checkBlackList(myDomain);
+similarityCheck("001return.com");
