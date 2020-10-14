@@ -35,29 +35,27 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
 
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
-    request.onload = function () { //The API data loaded
-        //Read the JSON response from the API within this function
+    request.onload = function () { //The API data loaded and can now be safely utilized
+        //Read the JSON response from the API within this function only due async execution
 
-        let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
+        let rawJson = JSON.parse(this.responseText); //Get raw JSON response from the API and parse it into individual JSON objects
         let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
+        
         registrant = registrant.toString().toLowerCase();
-        registrant = registrant.replace(".", ""); //Regex to remove all periods from a string including the last one
-        registrant = registrant.replace(new RegExp(/\"/g), "");
-        //Checks to the existence of legal incorporation symbols and removes them from the domain string
-        //For example: 'apple Inc' -> "apple"
-        //Currently this is broken for an unknown reason
-        for (var i = 0; i < incorporation.length; i++) {
-         if (registrant.toString().includes(incorporation[i])){
-             //This IF block is being hit at the correct time, but the replacement part is broken
-            registrant.split(incorporation[i]).join("");
-            console.log(registrant);
-         }
-         else {
-             //console.log("else branch");
-         }
-        }
 
-        if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
+        //Remove periods and quotes from JSON data for consistency
+        registrant = registrant.replace(".", "");
+        registrant = registrant.replace(new RegExp(/\"/g), "");
+        
+        /* Checks to the existence of legal incorporation symbols and removes them from the domain string
+        For example: 'apple inc' -> "apple" */
+        var incSymbolRegularExpression = ""; //Temp value to build custom per-iteration regex expressions
+        incorporation.forEach(incorporationSymbol => {
+            if (registrant.includes(incorporationSymbol))
+                registrant = registrant.replace(new RegExp(incorporationSymbol, "g"), ""); //Find all instances of the incorporation symbol with a regex and remove them from the string
+        });
+
+        if (request.status === 200) success(registrant.trim()); //Return registrant organizion if we get an OK from the get request
         else failure(request.status, rawJson); //Call the handleRequestRejection function to alert the system (and user if needed) about the API issue
         return;
 
