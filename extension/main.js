@@ -431,7 +431,7 @@ Using the whois API at ip2whois.com the public record of the domain registrant i
 
 */
 function getRegistrationOf(domain) { //Gets JSON data about a domain from the public record
-    let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
+    let completeUrl = `https://api.ip2whois.com/v1?key=free&domain=${domain}`; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     request.open("GET", completeUrl, true); //Open an https connection for the given constructed URL
     request.onload = function () { //The API data loaded
@@ -505,6 +505,8 @@ function checkBlackList(domainToCheck){
     Check the domain against the known domains list for similarity
  */
 function similarityCheck(domain){
+
+
     return ""; //Return most similar domain
 }
 
@@ -518,5 +520,17 @@ function suggest(registrant){
     return null;
 }
 
+
+/*
+    Give a warning if the domain is not found on both lists
+    */
+function notFound(domain){
+    if (checkWhiteList(domain) == null && checkBlackList(domain) == null)
+        window.alert("The domain " + domain + " is unrecognized");
+    return null;
+}
+
 var myDomain = "001return.com";
+var myDomain2 = "fakewebsite.com";
 checkBlackList(myDomain);
+notFound(myDomain2);
