@@ -47,7 +47,14 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
         //For example: 'apple Inc' -> "apple"
         //Currently this is broken for an unknown reason
         for (var i = 0; i < incorporation.length; i++) {
-         if (registrant.toString().includes(incorporation[i])) registrant.split(incorporation[i]).join("");
+         if (registrant.toString().includes(incorporation[i])){
+             //This IF block is being hit at the correct time, the replacement is broken
+            registrant.split(incorporation[i]).join("");
+            console.log(registrant);
+         }
+         else {
+             console.log("else branch");
+         }
         }
 
         if (request.status === 200) success(registrant); //Return registrant organizion if we get an OK from the get request
