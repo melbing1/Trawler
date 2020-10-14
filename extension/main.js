@@ -5,6 +5,7 @@ be placed elsewhere.
 main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
 
+ */
     Example of Usage
     validate("apple.com")
         Do not include http/https or www etc.
