@@ -10,6 +10,10 @@ main.js
         Do not include http/https or www etc.
 */
 
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
+getRegistrationOf("apple.com", "Apple.com", WhoisDataProcessing, handleRequestRejection);
+
 /*
 Demo Functions:
 
@@ -27,29 +31,65 @@ function validate(domain){
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
 }
 
-/*
-Args: Domain -> A domain in standard form 
-Return: registrant of domain
-
-Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
-
-*/
-function getRegistrationOf(domain) { //Gets JSON data about a domain from the public record
+/**
+ * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
+ * @param {string} domain The domain in standardardized format which is to be used to build a WHOIS API query.
+ * @param {string} compareTo The suspected domain registrant
+ * @param {function} successCallback Called on async success
+ * @param {function} FailureCallback Called on aysnc failure
+ */
+function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    request.open("GET", completeUrl, true); //Open an https connection for the given constructed URL
-    request.onload = function () { //The API data loaded
-        //Read the JSON response from the API within this function
+    let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
 
-        let rawJson = JSON.parse(this.responseText); //Get raw JSON response and parse into JSON objects
-        let registrant = rawJson.registrant.organization; //Get the registrant orange
+    request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
+    request.onload = function () { //The API data loaded and can now be safely utilized
+        //Read the JSON response from the API within this function only due async execution
 
-        if (registrant === null || registrant === "" && registrant === " ") { //Ensure that the request was successful
-            handleRequestRejection() //Gracefully handle API access issues
-        }
+        let rawJson = JSON.parse(this.responseText); //Get raw JSON response from the API and parse it into individual JSON objects
+        let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
+        
+        registrant = registrant.toString().toLowerCase();
+
+        //Remove periods and quotes from JSON data for consistency
+        registrant = registrant.replace(".", "");
+        registrant = registrant.replace(new RegExp(/\"/g), "");
+        
+        /* Checks to the existence of legal incorporation symbols and removes them from the domain string
+        For example: 'apple inc' -> "apple" */
+        var incSymbolRegularExpression = ""; //Temp value to build custom per-iteration regex expressions
+        incorporation.forEach(incorporationSymbol => {
+            if (registrant.includes(incorporationSymbol))
+                registrant = registrant.replace(new RegExp(incorporationSymbol, "g"), ""); //Find all instances of the incorporation symbol with a regex and remove them from the string
+        });
+
+        if (request.status === 200) success(registrant.trim()); //Return registrant organizion if we get an OK from the get request
+        else failure(request.status, rawJson); //Call the handleRequestRejection function to alert the system (and user if needed) about the API issue
+        return;
+
+        /* 
+        This code should probably be deprecated as there is no good reason to handle edge cases here for both reliability and testing reasons.
+        if (registrant === null || registrant === "" || registrant === " " || registrant === undefined) { //Ensure that the request was successful
+            handleRequestRejection(request.status, rawJson); //Gracefully handle API access issues
+        } 
+        */
     }
     request.send() //Request data via get query
 }
+
+/*
+    Callback function for the whois asychronous execution where the api data (when and if received) is processed
+    IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
+*/
+function WhoisDataProcessing(registrant, compareTo){
+    /*
+
+    */
+    //console.log(registrant);
+    return registrant == compareTo;
+}
+
 
 /*
     Trim domain wrapping units which are unnessaray
@@ -58,16 +98,35 @@ function getRegistrationOf(domain) { //Gets JSON data about a domain from the pu
 
     For example: "https://www.apple.com/mac/" should become "apple.com" 
 */
+
 function trimDomain(url){
     let domain = url; //PLACEHOLDER
     return domain
 }
 
-function handleRequestRejection(status, jsonData){ //Error handler for WHOIS requests
+/**
+ * @description Gracefully handle failed API requests. Failed callback for getRegistrationOf(domain)
+ * @param {number} status The HTTP GET status string 
+ * @param {JSON} jsonData The raw JSON data of the request if it exists.
+ */
+function handleRequestRejection(status, jsonData) { //Error handler for WHOIS requests
+    //The API is down or unreachable
+    if (status == 404) { 
+        alertUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
+        console.log("API was unreachable")
+        return
+    }
+    if (jsonData == null || jsonData.toString == "")
+        alertUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
+    
+
+
+
+    /*console.log(status.status)
     //PLACEHOLDER ERROR HANDLING
     console.log("Failed to get registration data");
     console.log("Request Status: " + status);
-    console.log("Request Response JSON: " + jsonData);
+    console.log("Request Response JSON: " + jsonData); */
 }
 
 /*
@@ -101,6 +160,9 @@ function suggest(registrant){
     return null;
 }
 
+
+
+
 function updateLocalWhiteList(domain){
 
 }
@@ -109,6 +171,7 @@ function updateLocalBlacklist(domain){
 
 }
     
+
 /**
  * @description Provide the user with an error message informing them of a non-critical error
  * @param {string} title The title of the alert for the user
@@ -116,5 +179,25 @@ function updateLocalBlacklist(domain){
  * @param {boolean} type The way in which the user is alerted where true indicates a subtle alert and false indicates an obtrusive alert
  */
 function alertUser(title, msg, type){
-    alert(msg)
+    alert(title + "\n", msg);
 }
+
+/*
+* Example testing function
+*/
+/*
+function add(x,y){
+    return x + y;
+}
+*/
+
+/*
+* NOTE: export for testing purposes only
+*/
+exports.getRegistrationOf = getRegistrationOf;
+exports.WhoisDataProcessing = WhoisDataProcessing;
+exports.handleRequestRejection = handleRequestRejection;
+
+//Example export for testing
+//exports.add = add;   
+
