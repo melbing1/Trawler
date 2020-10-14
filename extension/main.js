@@ -159,7 +159,7 @@ function suggest(registrant){
  * @param {boolean} type The way in which the user is alerted where true indicates a subtle alert and false indicates an obtrusive alert
  */
 function alertUser(title, msg, type){
-    alert(msg);
+    alert(title + "\n", msg);
 }
 
 /*
