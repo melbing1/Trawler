@@ -14,6 +14,15 @@ var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 getRegistrationOf("apple.com", "Apple.com", WhoisDataProcessing, handleRequestRejection);
 
+/*
+Demo Functions:
+
+validate("Apple.com");
+validate("mozilla.org");
+validate("hofstra.edu");
+*/
+
+
 function validate(domain){
     checkWhiteList(domain); //Check the domain against the whitelist
     checkBlackList(domain); //Check the domain against the blacklist
@@ -152,6 +161,17 @@ function suggest(registrant){
 }
 
 
+
+
+function updateLocalWhiteList(domain){
+
+}
+
+function updateLocalBlacklist(domain){
+
+}
+    
+
 /**
  * @description Provide the user with an error message informing them of a non-critical error
  * @param {string} title The title of the alert for the user
@@ -179,4 +199,5 @@ exports.WhoisDataProcessing = WhoisDataProcessing;
 exports.handleRequestRejection = handleRequestRejection;
 
 //Example export for testing
-//exports.add = add;
+//exports.add = add;   
+
