@@ -20,12 +20,10 @@ validate("hofstra.edu");
 console.log("LL");
 
 function validate(domain){
-    checkWhiteList(domain); //Check the domain against the whitelist
-    checkBlackList(domain); //Check the domain against the blacklist
+    siteList(domain); //See if the site is good bad or unknown.
     let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
     suggest(assertedRegistrant); //Suggest the correct spelling for the URL
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
-    siteList(domain); //See if the site is good bad or unknown.
 
 }
 
