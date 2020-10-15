@@ -25,7 +25,7 @@ function validate(domain){
     let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
     suggest(assertedRegistrant); //Suggest the correct spelling for the URL
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
-    siteList()
+    siteList(domain); //See if the site is good bad or unknown.
 
 }
 
@@ -125,7 +125,7 @@ function siteList(domain){
     console.log("LL");
     if(false){
         return;
-        } else if(true) {
+    } else if(true) {
         alert("This is a known phishing site, For your safty we are stopping you from going there.");
     } else{
         alert("This is a unkown site. Procede with cauiiof=fkdjr");
