@@ -17,7 +17,7 @@ validate("Apple.com");
 validate("mozilla.org");
 validate("hofstra.edu");
 */
-
+console.log("LL");
 
 function validate(domain){
     checkWhiteList(domain); //Check the domain against the whitelist
@@ -25,6 +25,8 @@ function validate(domain){
     let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
     suggest(assertedRegistrant); //Suggest the correct spelling for the URL
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
+    siteList()
+
 }
 
 /*
@@ -117,4 +119,15 @@ function updateLocalBlacklist(domain){
  */
 function alertUser(title, msg, type){
     alert(msg)
+}
+
+function siteList(domain){
+    console.log("LL");
+    if(false){
+        return;
+        } else if(true) {
+        alert("This is a known phishing site, For your safty we are stopping you from going there.");
+    } else{
+        alert("This is a unkown site. Procede with cauiiof=fkdjr");
+    }
 }
