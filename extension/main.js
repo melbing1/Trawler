@@ -76,7 +76,7 @@ function handleRequestRejection(status, jsonData){ //Error handler for WHOIS req
     Check domain against known safe domains whitelist
  */
 function checkWhiteList(domain){
-    return null;
+    return false;
 }
 
 /*
@@ -123,11 +123,11 @@ function alertUser(title, msg, type){
 
 function siteList(domain){
     console.log("LL");
-    if(false){
+    if(checkWhiteList){
         return;
-    } else if(true) {
-        alert("This is a known phishing site, For your safty we are stopping you from going there.");
+    } else if(checkBlackList(domain)) {
+        alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
     } else{
-        alert("This is a unkown site. Procede with cauiiof=fkdjr");
+        alert("This is a unknown site. Procede with caution");
     }
 }
