@@ -432,8 +432,12 @@ validate("hofstra.edu");
 
 
 function validate(domain){
+    /*
+    Temporarily removed for demo
     checkWhiteList(domain); //Check the domain against the whitelist
     checkBlackList(domain); //Check the domain against the blacklist
+    */
+    siteList(domain); //See if the site is good bad or unknown.
     let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
     suggest(assertedRegistrant); //Suggest the correct spelling for the URL
     getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
@@ -632,6 +636,17 @@ function alertUser(title, msg, type){
     alert(title + "\n", msg);
 }
 
+function siteList(domain){
+    console.log("LL");
+    if(checkWhiteList){
+        return;
+    } else if(checkBlackList(domain)) {
+        alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
+    } else{
+        alert("This is a unknown site. Procede with caution");
+    }
+}
+
 /*
 * Example testing function
 */
@@ -653,6 +668,8 @@ exports.handleRequestRejection = handleRequestRejection;
 
 // Main Calls
 var myDomain = "001return.com";
-checkBlackList(myDomain);
-similarityCheck("001return.com");
+//checkBlackList(myDomain);
+//similarityCheck("001return.com");
+
+validate(myDomain);
 
