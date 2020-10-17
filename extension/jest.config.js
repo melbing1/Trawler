@@ -14,3 +14,7 @@
         
 //     ]
 //}
+
+module.exports = {
+    verbose: true
+}

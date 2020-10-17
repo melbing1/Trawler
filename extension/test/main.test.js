@@ -4,7 +4,7 @@
 
 const main = require('../main');
 
-test("Apple inc registered Apple.com", done => {
+test("Apple inc has registered Apple.com", done => {
     function callback(data) {
         try {
             expect(data).toBe('apple')
@@ -17,7 +17,7 @@ test("Apple inc registered Apple.com", done => {
     main.getRegistrationOf("apple.com", "apple", callback, main.handleRequestRejection);
 });
 
-test("Google registered google.com", done => {
+test("Google has registered google.com", done => {
     function callback(data) {
         try {
             expect(data).toBe('google')
@@ -30,7 +30,7 @@ test("Google registered google.com", done => {
     main.getRegistrationOf("google.com", "google", callback, main.handleRequestRejection);
 });
 
-test("Hofstra registered hofstra.edu", done => {
+test("Hofstra has registered hofstra.edu", done => {
     function callback(data) {
         try {
             expect(data).toBe('hofstra')
@@ -42,6 +42,22 @@ test("Hofstra registered hofstra.edu", done => {
 
     main.getRegistrationOf("hofstra.edu", "hofstra", callback, main.handleRequestRejection);
 });
+
+/*
+Intentionally failing test to demo JEST output
+test("Amazon has not registered google.com", done => {
+    function callback(data) {
+        try {
+            expect(data).toBe('amazon')
+            done();
+        } catch (error) {
+            done(error);
+        }
+    }
+
+    main.getRegistrationOf("google.com", "amazon", callback, main.handleRequestRejection);
+});
+*/
 
 //Example of 'jest' unit test
 /*
