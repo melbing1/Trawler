@@ -14,7 +14,9 @@ Example of Usage
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 //npm install string-similarity
-var stringSimilarity = require('string-similarity');
+//var stringSimilarity = require('string-similarity');
+//alert("Hello World");
+//console.log("Greetings");
 
 // Hardcoded phishing site database (100 entries)
 const maliciousData = [
@@ -431,16 +433,16 @@ validate("hofstra.edu");
 */
 
 
-function validate(domain){
+function validate(domain, compareTo){
     /*
     Temporarily removed for demo
     checkWhiteList(domain); //Check the domain against the whitelist
     checkBlackList(domain); //Check the domain against the blacklist
     */
     siteList(domain); //See if the site is good bad or unknown.
-    let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
-    suggest(assertedRegistrant); //Suggest the correct spelling for the URL
-    getRegistrationOf(domain); //If the user wants to continue, the heuristic check is performed
+    //let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
+    //suggest(assertedRegistrant); //Suggest the correct spelling for the URL
+    getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //If the user wants to continue, the heuristic check is performed
 }
 
 /**
@@ -476,7 +478,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
                 registrant = registrant.replace(new RegExp(incorporationSymbol, "g"), ""); //Find all instances of the incorporation symbol with a regex and remove them from the string
         });
 
-        if (request.status === 200) success(registrant.trim()); //Return registrant organizion if we get an OK from the get request
+        if (request.status === 200) success(registrant.trim(), compareTo); //Return registrant organizion if we get an OK from the get request
         else failure(request.status, rawJson); //Call the handleRequestRejection function to alert the system (and user if needed) about the API issue
         return;
 
@@ -579,6 +581,8 @@ function checkBlackList(domain){
 /*
     Check the domain against the known domains list for similarity
  */
+
+/*
 function similarityCheck(domain){
     var similarityValue;
 
@@ -594,6 +598,7 @@ function similarityCheck(domain){
         (meaning they are very similar), suggest domain 
         to the user.
         */
+       /*
         if (similarityValue > 0.8){
             console.log('Did you mean to go to: ' + maliciousData[entry].domain + '?');
             return maliciousData[entry].domain;
@@ -602,8 +607,7 @@ function similarityCheck(domain){
     //Notify user if no similar domain is found
     console.log('No similar domains found.');
     return null;
-}
-
+} */
 /*
     Suggest a corrected URL to handle URL Typos
  */
