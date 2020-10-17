@@ -12,7 +12,9 @@ Example of Usage
         Do not include http/https or www etc.
 */
 
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+//NOTE: the require for xmlhttprequests is only nessasary for running unit tests, in the browser you do not need to require it
+//var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+
 //npm install string-similarity
 //var stringSimilarity = require('string-similarity');
 //alert("Hello World");
@@ -661,12 +663,12 @@ function add(x,y){
 */
 
 /*
-* NOTE: export for testing purposes only
-*/
+* NOTE: export for unit testing purposes only
+
 exports.getRegistrationOf = getRegistrationOf;
 exports.WhoisDataProcessing = WhoisDataProcessing;
 exports.handleRequestRejection = handleRequestRejection;
-
+*/
 //Example export for testing
 //exports.add = add; 
 

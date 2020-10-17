@@ -20,6 +20,14 @@
         "name": "Launch Firefox with Trawler",
         "file": "${workspaceFolder}/index.html",
         "addonPath": "${workspaceFolder}/extension"
+        },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "name": "Launch Firefox with Troubleshooting Page",
+            "file": "${workspaceFolder}/extension/troubleshooting_page/troubleshooting.html",
+            "addonPath": "${workspaceFolder}/extension"
         }
     ]
 }
