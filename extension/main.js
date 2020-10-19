@@ -643,7 +643,7 @@ function updateLocalBlacklist(domain){
 function alertUser(title, msg, type){
     let panelInfo = {
         type: "detached_panel",
-        url: "troubleshooting/troubleshooting.html",
+        url: "troubleshooting_page/troubleshooting.html",
         width: 250,
         height: 250
     }
