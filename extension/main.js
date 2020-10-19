@@ -424,6 +424,8 @@ const maliciousData = [
     }
 ]
 
+alert("hello", "world", true);
+
 getRegistrationOf("apple.com", "Apple.com", WhoisDataProcessing, handleRequestRejection);
 
 /*
@@ -633,13 +635,20 @@ function updateLocalBlacklist(domain){
     
 
 /**
- * @description Provide the user with an error message informing them of a non-critical error
+ * @description Provide the user with an error message informing them of an issue.
  * @param {string} title The title of the alert for the user
  * @param {string} msg The message to display to the user
  * @param {boolean} type The way in which the user is alerted where true indicates a subtle alert and false indicates an obtrusive alert
  */
 function alertUser(title, msg, type){
-    alert(title + "\n", msg);
+    let panelInfo = {
+        type: "detached_panel",
+        url: "troubleshooting/troubleshooting.html",
+        width: 250,
+        height: 250
+    }
+    let issueWindow = browser.windows.create(panelInfo);
+
 }
 
 function siteList(domain){
