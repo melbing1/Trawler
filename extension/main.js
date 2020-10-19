@@ -424,9 +424,8 @@ const maliciousData = [
     }
 ]
 
-alert("hello", "world", true);
 
-getRegistrationOf("apple.com", "Apple.com", WhoisDataProcessing, handleRequestRejection);
+alertUser("Update Failed", "There was a database issue that caused the update to fail", false);
 
 /*
 Demo Functions:
