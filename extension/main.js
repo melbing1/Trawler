@@ -642,11 +642,16 @@ function updateLocalBlacklist(domain){
 function alertUser(title, msg, type){
     let panelInfo = {
         type: "detached_panel",
-        url: "troubleshooting_page/troubleshooting.html",
+        url: "troubleshooting.html",
         width: 250,
         height: 250
-    }
-    let issueWindow = browser.windows.create(panelInfo);
+    };
+    //var issueWindow = browser.windows.create(panelInfo);
+    browser.tabs.create({url: "troubleshooting.html"}).then(() => {
+        browser.tabs.executeScript({
+          code: `console.log('location:', window.location.href);`
+        });
+      });
 
 }
 
