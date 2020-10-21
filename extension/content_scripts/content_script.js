@@ -15,9 +15,10 @@ function handleError(error){
 }
 
 msgUser("Hello World", "This is the message", true); //Example
+//NOTE: This is currently a work in progress, comment out for the demo and show the comminication and webpages instead
 function getRegistrationOfDomain(request, sender, sendResponce) {
     getRegistrationOf(domain, compareTo, 
-        success(domainStr, compareToStr) => {
+        success(domainStr, compareToStr) => { //Why is this still broken??
             if (domainStr == compareToStr){ sendResponce({responce: "success"}); }},
         failure(status, rawData) => { 
             sendResponce({responce: "failure"});
