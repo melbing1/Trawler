@@ -2,7 +2,7 @@
 	"browser_action": {
 		"browser_style": true,
 		"default_title": "Trawler",
-		"default_popup": "troubleshooting.html"
+		"default_popup": "TrawlerInfo.html"
 	},
 	"manifest_version": 2,
 	"name": "Trawler",
@@ -15,7 +15,11 @@
 		"js": ["content_scripts/content_script.js"]
 		}
 	],
+	"background": {
+		"scripts": "background.js"
+	},
 	"permissions": [
-		"<all_urls>"
+		"<all_urls>",
+		"activeTab"
 	]
 }
