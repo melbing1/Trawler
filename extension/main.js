@@ -24,7 +24,6 @@ Example of Usage
 
 
 //alertUser("Hello", "This is the world", true);
-console.log("Hello World");
 
 const maliciousData = [
     {
@@ -448,9 +447,8 @@ function validate(domain, compareTo){
     siteList(domain); //See if the site is good bad or unknown.
     //let assertedRegistrant = similarityCheck(domain); //Check for similarity too a domain
     //suggest(assertedRegistrant); //Suggest the correct spelling for the URL
-    getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //If the user wants to continue, the heuristic check is performed
+    //getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //If the user wants to continue, the heuristic check is performed
 }
-
 
 
 

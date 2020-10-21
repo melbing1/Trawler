@@ -20,6 +20,8 @@
 	},
 	"permissions": [
 		"<all_urls>",
-		"activeTab"
+		"activeTab",
+		"tabs",
+		"notifications"
 	]
 }
