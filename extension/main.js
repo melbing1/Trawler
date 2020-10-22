@@ -5,8 +5,10 @@ be placed elsewhere.
 main.js
 (c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
  */
-
-
+var obj = {"google":"google.com", "apple" :"apple.com"};
+updateLocalWhiteList(obj);
+//updateLocalBlacklist();
+//alert("This is a test");
 /*
     Example of Usage
     validate("apple.com")
@@ -92,4 +94,65 @@ function suggest(registrant){
     Create suggestion for correct URL and display it to the user
      */
     return null;
+}
+
+/*
+T7 - Maintaining local lists of the 
+“known safe domains and ownerships” and 
+“known phishing domains” lists
+    adds white list domains to local storage 
+*/
+// testing local storage mechanic
+function updateLocalWhiteList(domain) { // assuming one domain is passed in JSON format
+    //1. get JSON data from local storage
+    // check to make sure there is enough storage
+    // this is probably not necessay since storage can store 
+    // 
+    var parsDomain = JSON.parse(domain);
+    browser.storage.local.set(parsDomain);
+    // let domainParsW = JSON.parse(domain);
+    // handles memory
+   // if (storage.storageArea(whiteListLoc) >= browser.storage.) { // placeholder
+           // throw new Error("Not enough storage");
+    // handles the first domain entry and stores to local storage in JSON
+    //if (whiteListLoc === null) 
+    //    whiteListLoc.set(domain);
+    // handles all other entries
+    //else {
+        //2. (parse) JSON data to a Javascript object
+        //whiteListData = whiteListLoc.get(JSON.parse(whiteListLoc));
+        //3. add domain to javascript object
+        // assuming the JSON object when converted to a java
+        // script object is an array of strings
+        //whiteListData.push(domainParse);
+        //4. convert object back to JSON (stringify)
+       // whitelistData = JSON.stringify(whitelistData);
+        //5. store JSON object back to local storage
+       //whiteListLoc = storage.storageArea.set(whiteListData);
+       //}
+}
+/*
+    Adds black list domains to local storage
+*/
+// currently being used to test local storage of whitelist
+function updateLocalBlacklist() {
+    let getData = browser.storage.local.get(); // this should retreive all data from local storage as udefined will do that
+    console.log("The data is in local storage as", getData);
+    //let blackListLoc = browser.storage.local;
+    //let domainParsB =  JSON.parse(domain);
+
+   // if (storage.storageArea(whiteListLoc) >= "bytes allowed") { // placeholder
+     //   throw new Error("Not enough storage");
+    
+   // if (blackListLoc === null) 
+       // blackListLoc.set(domain);
+    //else blackListData = JSON.parse()
+
+    
+
+    //1. get JSON data from local storage
+    //2. (parse) JSON data to a Javascript object
+    //3. add domain to javascript object
+    //4. convert object back to JSON (stringify)
+    //5. store JSON object back to local storage
 }
