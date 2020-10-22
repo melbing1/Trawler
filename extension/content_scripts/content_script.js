@@ -1,8 +1,8 @@
-function msgUser(title, message, type){
+function msgUser(title, message, popup){
     var sending = browser.runtime.sendMessage({
-        title: "Hello World",
-        msg: "This is a message",
-        type: false
+        title: title,
+        msg: message,
+        type: popup
     });
     sending.then(handleResponce, handleError)
 }
@@ -14,7 +14,10 @@ function handleError(error){
     console.log(error); //Alert not displayed
 }
 
-msgUser("Hello World", "This is the message", true); //Example
+//DEMO FUNCTIONS
+//msgUser("Hello World", "This is the message", true); //Example
+//msgUser("Notification from Firefox", "This is the message from firefox", false); //Example
+
 //NOTE: This is currently a work in progress, comment out for the demo and show the comminication and webpages instead
 /*function getRegistrationOfDomain(request, sender, sendResponce) {
     getRegistrationOf(domain, compareTo, 

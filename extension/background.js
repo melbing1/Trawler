@@ -3,7 +3,7 @@
 
 
 //alertUser("Hello", "world", false);
-
+console.log("test");
 /**
  * @description Provide the user with an error message informing them of an issue.
  * @param {string} title The title of the alert for the user
