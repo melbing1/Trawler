@@ -16,6 +16,26 @@ Example of Usage
 //npm install string-similarity
 //var stringSimilarity = require('string-similarity');
 
+const safeData = [
+    {
+        "domainId": 1,
+        "domain": "facebook.com"
+    },
+    {
+        "domainId": 2,
+        "domain": "apple.com"
+    },
+    {
+        "domainId": 3,
+        "domain": "mozilla.org"
+    },
+    {
+        "domainId": 4,
+        "domain": "hofstra.edu"
+    }
+]
+
+
 // Hardcoded phishing site database (100 entries)
 const maliciousData = [
     {
@@ -545,7 +565,15 @@ function handleRequestRejection(status, jsonData) { //Error handler for WHOIS re
     Check domain against known safe domains whitelist
  */
 function checkWhiteList(domain){
-    return false;
+    
+    for (var entry in safeData){
+        if (domain == safeData[entry].domain){
+            console.log('Matched safe domain: ' + entry);
+            //Return the matched domain string.
+            return true;
+        }
+    }
+        return false;
 }
 
 /*
@@ -636,7 +664,7 @@ function alertUser(title, msg, type){
     alert(title + "\n", msg);
 }
 
-function siteList(domain){
+function siteList(domain){ //determends what the program does for the site theyre visiting
     if(checkWhiteList(domain)){
         console.log("LA");
         return;
@@ -645,12 +673,23 @@ function siteList(domain){
         alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
     } else if (similarityCheck(domain) != null){
         console.log("L F");
-        alert(domain + " is what you were trying to. \nDid you mean " + similarityCheck(domain) + "?");
+        
+        if(confirm(domain + " is what you were trying to. \nDid you mean to go to " + similarityCheck(domain) + " instead?")){
+            //if user goes to fixed site
+        } else {
+            //user does not want to go to fixed url site
+        }
 
-        //create suggestion UI here
     } else {
         console.log("LC");
-        alert("This is a unknown site. Procede with caution");
+        if(confirm(domain + " is a unknown site. Would you like to continue?")){
+            //continue to unkown site.
+            if(confirm("Would you like to add " + domain + " to your list of safe domains?")){
+                //add site to list of safe domains.
+            }
+        } else {
+            //stay off of unkown site/
+        }
     }
 }
 
@@ -674,10 +713,12 @@ exports.handleRequestRejection = handleRequestRejection;*/
 //exports.add = add; 
 
 // Main Calls
-var myDomain = "001return.com";
+var myDomain = "apple.com";
+var myDomain1 = "001return.com";
 var myDomain2 = "idk.com";
 var myDomain3 = "001returnnn.com";
 
 validate(myDomain);
+//validate(myDomain1);
 //validate(myDomain2);
 //validate(myDomain3);
