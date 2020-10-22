@@ -16,7 +16,7 @@ function handleError(error){
 
 msgUser("Hello World", "This is the message", true); //Example
 //NOTE: This is currently a work in progress, comment out for the demo and show the comminication and webpages instead
-function getRegistrationOfDomain(request, sender, sendResponce) {
+/*function getRegistrationOfDomain(request, sender, sendResponce) {
     getRegistrationOf(domain, compareTo, 
         success(domainStr, compareToStr) => { //Why is this still broken??
             if (domainStr == compareToStr){ sendResponce({responce: "success"}); }},
@@ -26,8 +26,8 @@ function getRegistrationOfDomain(request, sender, sendResponce) {
         }
     );
     sendResponce({responce: "success"}); //TODO: return correct code
-}
-browser.runtime.onMessage.addListener(getRegistrationOfDomain);
+} */
+//browser.runtime.onMessage.addListener(getRegistrationOfDomain);
 
 /** 
  * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
