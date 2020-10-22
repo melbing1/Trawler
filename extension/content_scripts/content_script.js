@@ -1,5 +1,6 @@
 function msgUser(title, message, popup){
     var sending = browser.runtime.sendMessage({
+        call: "alertUser",
         title: title,
         msg: message,
         type: popup
@@ -14,6 +15,24 @@ function handleError(error){
     console.log(error); //Alert not displayed
 }
 
+function writeDBLocalStorage(listData){
+    var sending = browser.runtime.sendMessage({
+        call: "writeDBLocalStorage",
+        data: listData
+    });
+    sending.then(handleResponceLocalDB, handleErrorLocalDB);
+}
+
+//Call backs for local storage message
+function handleResponceLocalDB(msg){
+    return true;
+}
+function handleErrorLocalDB(error){
+    return true;
+}
+
+var exampleData = {"google":"google.com", "apple" :"apple.com"};
+writeDBLocalStorage(exampleData);
 //DEMO FUNCTIONS
 //msgUser("Hello World", "This is the message", true); //Example
 //msgUser("Notification from Firefox", "This is the message from firefox", false); //Example

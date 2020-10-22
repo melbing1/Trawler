@@ -450,10 +450,6 @@ function validate(domain, compareTo){
     //getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //If the user wants to continue, the heuristic check is performed
 }
 
-
-
-
-
 /*
     Trim domain wrapping units which are unnessaray
     Args: url -> A full URL
@@ -466,9 +462,6 @@ function trimDomain(url){
     let domain = url; //PLACEHOLDER
     return domain
 }
-
-
-
 /*
     Check domain against known safe domains whitelist
  */
@@ -615,5 +608,5 @@ var myDomain = "001return.com";
 //checkBlackList(myDomain);
 //similarityCheck("001return.com");
 
-validate(myDomain);
+//validate(myDomain);
 
