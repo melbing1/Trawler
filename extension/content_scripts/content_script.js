@@ -8,10 +8,6 @@ function msgUser(title, message, popup){
     sending.then(handleResponce, handleError)
 }
 
-function handleResponce(message){
-    console.log(message);
-    return true; //Displayed alert
-}
 function handleError(error){
     console.log(error); //Alert not displayed
 }
@@ -22,7 +18,7 @@ function writeDBLocalStorage(listData){
         //Maybe replace the keys with an array of domains
         data: {call: "writeDBLocalStorage", domains: ["google.com", "apple.com", "hofstra.edu"], owners: ["google", "apple", "hofstra"]},
     });
-    sending.then(handleReadData, handleErrorLocalDB);
+    sending.then(handleWriteSuccess, handleErrorLocalDB);
 }
 function readDBLocalStorage(){
     var sending = browser.runtime.sendMessage({
@@ -31,20 +27,22 @@ function readDBLocalStorage(){
         data: {call: "readDBLocalStorage"}
     });
     sending.then(handleReadData, handleErrorLocalDB);
-    console.log("readDBLocalStorage returning");
     return true;
 }
 
 //Call backs for local storage message
-function handleReadData(result){
-    console.log("This: " + result.responce.data);
+function handleReadData(message){
+    console.log("Domains: " + message.responce.domains);
+    console.log("Owners: " + message.responce.owners);
+
     return true;
 }
 function handleErrorLocalDB(error){
-    console.log("Error: " + error.responce.toString());
+    console.log("Error: " + error);
     return true;
 }
-function handleWriteSuccess(result){
+function handleWriteSuccess(msg){
+    console.log("Wrote: " + msg)
     return true;
 }
 
