@@ -22,19 +22,35 @@ function writeDBLocalStorage(listData){
         //Maybe replace the keys with an array of domains
         data: {call: "writeDBLocalStorage", domains: ["google.com", "apple.com", "hofstra.edu"], owners: ["google", "apple", "hofstra"]},
     });
-    sending.then(handleResponceLocalDB, handleErrorLocalDB);
+    sending.then(handleReadData, handleErrorLocalDB);
+}
+function readDBLocalStorage(){
+    var sending = browser.runtime.sendMessage({
+        //call: "writeDBLocalStorage",
+        //Maybe replace the keys with an array of domains
+        data: {call: "readDBLocalStorage"}
+    });
+    sending.then(handleReadData, handleErrorLocalDB);
+    console.log("readDBLocalStorage returning");
+    return true;
 }
 
 //Call backs for local storage message
-function handleResponceLocalDB(msg){
+function handleReadData(result){
+    console.log("This: " + result.responce.data);
     return true;
 }
 function handleErrorLocalDB(error){
+    console.log("Error: " + error.responce.toString());
+    return true;
+}
+function handleWriteSuccess(result){
     return true;
 }
 
 var exampleData = {"google":"google.com", "apple" :"apple.com"};
-writeDBLocalStorage(exampleData);
+//writeDBLocalStorage(exampleData);
+readDBLocalStorage();
 //DEMO FUNCTIONS
 //msgUser("Hello World", "This is the message", true); //Example
 //msgUser("Notification from Firefox", "This is the message from firefox", false); //Example

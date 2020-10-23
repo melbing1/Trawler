@@ -10,6 +10,7 @@ function handleCrossScriptMessage(request, sender, sendResponce){
   else if (request.data.call === "writeDBLocalStorage"){
     updateLocalWhiteList(request, sender, sendResponce);
   }
+  else if (request.data.call === "readDBLocalStorage") { readLocalWhiteList(request, sender, sendResponce); }
 }
 /**
  * @description Provide the user with an error message informing them of an issue.
@@ -47,20 +48,15 @@ function output(contents){
   //console.log(contents);
   console.log(contents);
 }
-function readLocalWhiteList(){
-  var readingData = browser.storage.local.get();
-  readingData.then(output,output);
+function readLocalWhiteList(request, sender, sendResponce){
+  var gettingData = browser.storage.local.get();  
+  gettingData.then(storedData => {
+    sendResponce({responce: storedData.data}); //Indicates a successful read
+    console.log("hello?");
+  });
 }
 function updateLocalWhiteList(request, sender, sendResponce) {
-  console.log("INPUT: " + request.toString());
-  //browser.storage.local.set(request);
-  //browser.storage.local.set(request.data.owners);
-  var gettingData = browser.storage.local.get();
-  gettingData.then(results => {
-    console.log("STORED: " + results.data.domains.toString());
-  }); 
-  gettingData.then(output, output);
-  sendResponce("Success");
+  browser.storage.local.set(request).then( () => console.log("done"));  
 }
 
 browser.runtime.onMessage.addListener(handleCrossScriptMessage);
