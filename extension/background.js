@@ -1,15 +1,13 @@
 //Background.js
 //This below call works correctly if it is accessable in the context
-
-
 //alertUser("Hello", "world", false);
 
 function handleCrossScriptMessage(request, sender, sendResponce){
   //All sendMessage calls should include an object key called "call" which can be used here to call the correct func, sanitized first of course
-  if (request.call == "alertUser"){
+  if (request.data.call == "alertUser"){
     alertUser(request, sender, sendResponce);
   }
-  else if (request.call === "writeDBLocalStorage"){
+  else if (request.data.call === "writeDBLocalStorage"){
     updateLocalWhiteList(request, sender, sendResponce);
   }
 }
@@ -45,25 +43,24 @@ function alertUser(request, sender, sendResponce){
       }); */
 }
 
-
+function output(contents){
+  //console.log(contents);
+  console.log(contents);
+}
+function readLocalWhiteList(){
+  var readingData = browser.storage.local.get();
+  readingData.then(output,output);
+}
 function updateLocalWhiteList(request, sender, sendResponce) {
-  //var parsDomain = JSON.parse(domain);
-
-  browser.storage.local.set("apple", "apple.com");
-
-  /*
-  var listObj = request.data
-  var retrievingCurrentData = chrome.storage.local.get();
-  retrievingCurrentData.then(results => {
-    console.log("BEFORE: " + results.stats);
-  });
-  chrome.storage.local.set(listObj);
-  retrievingCurrentData.then(results => {
-    console.log("AFTER: " + results.stats);
-  });
-  */
-  sendResponce("Success"); //Placeholder responce
-
+  console.log("INPUT: " + request.toString());
+  //browser.storage.local.set(request);
+  //browser.storage.local.set(request.data.owners);
+  var gettingData = browser.storage.local.get();
+  gettingData.then(results => {
+    console.log("STORED: " + results.data.domains.toString());
+  }); 
+  gettingData.then(output, output);
+  sendResponce("Success");
 }
 
 browser.runtime.onMessage.addListener(handleCrossScriptMessage);

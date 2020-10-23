@@ -9,6 +9,7 @@ function msgUser(title, message, popup){
 }
 
 function handleResponce(message){
+    console.log(message);
     return true; //Displayed alert
 }
 function handleError(error){
@@ -17,8 +18,9 @@ function handleError(error){
 
 function writeDBLocalStorage(listData){
     var sending = browser.runtime.sendMessage({
-        call: "writeDBLocalStorage",
-        data: listData
+        //call: "writeDBLocalStorage",
+        //Maybe replace the keys with an array of domains
+        data: {call: "writeDBLocalStorage", domains: ["google.com", "apple.com", "hofstra.edu"], owners: ["google", "apple", "hofstra"]},
     });
     sending.then(handleResponceLocalDB, handleErrorLocalDB);
 }

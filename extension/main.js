@@ -428,16 +428,6 @@ const maliciousData = [
     }
 ]
 
-
-/*
-Demo Functions:
-
-validate("Apple.com");
-validate("mozilla.org");
-validate("hofstra.edu");
-*/
-
-
 function validate(domain, compareTo){
     /*
     Temporarily removed for demo
