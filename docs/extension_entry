@@ -1,1 +1,0 @@
-main.js may work better now because it is no longer a content script and thus can access more APIs. I created content_script.js for code that modifies the inside of a website if your code needs that functionality. 
