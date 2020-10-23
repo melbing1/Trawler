@@ -12,7 +12,7 @@ function handleError(error){
     console.log(error); //Alert not displayed
 }
 
-function writeDBLocalStorage(listData){
+function writeDBLocalStorage(domains, owners){
     var sending = browser.runtime.sendMessage({
         //call: "writeDBLocalStorage",
         //Maybe replace the keys with an array of domains
@@ -34,7 +34,6 @@ function readDBLocalStorage(){
 function handleReadData(message){
     console.log("Domains: " + message.responce.domains);
     console.log("Owners: " + message.responce.owners);
-
     return true;
 }
 function handleErrorLocalDB(error){

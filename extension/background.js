@@ -33,7 +33,7 @@ function handleCrossScriptMessage(request, sender, sendResponce){
     return true;
   }
   else if (request.data.call === "writeDBLocalStorage"){
-    browser.storage.local.set(request).then( () => { //Successfully wrote the data
+    browser.storage.local.set(request.data).then( () => { //Successfully wrote the data
       sendResponce({responce: true}); //Confirm data write success to CS
       return true; //Tells sendResponce to work asynchronously which is what we want
     });
@@ -44,11 +44,11 @@ function handleCrossScriptMessage(request, sender, sendResponce){
     //This is required for the API to work as intended
     var gettingData = browser.storage.local.get(); //Get stored data
     gettingData.then(storedData => { //Stored data has been loaded
-      var domainList = storedData.data.domains; //Get domains from loaded data
+      var domainList = storedData.data.domains; //Get domains from loaded data 
       var ownerList = storedData.data.owners; //Get owners from loaded data
       var responceObject = {domains: domainList, owners: ownerList} //Create an object with domains and owners for the content script
       sendResponce({responce: responceObject}); //Send list to content script
-      return true; //aync
+      return true; //async
     });
     return true;
   }
