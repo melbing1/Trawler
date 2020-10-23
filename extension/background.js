@@ -1,12 +1,20 @@
 //Background.js
 //This below call works correctly if it is accessable in the context
 //alertUser("Hello", "world", false);
-
+/**
+ * @description Handles all messages that are send to background.js. The request object MUST contain a "call" key pair to perform the correct operation with the data
+ * @param {object} request The data associated with the sendMessage call
+ * @param {object} sender Sender object
+ * @param {function} sendResponce Function to send data back to the original sender
+ * @returns {boolean} Async?
+ */
 function handleCrossScriptMessage(request, sender, sendResponce){
-  //All sendMessage calls should include an object key called "call" which can be used here to call the correct func, sanitized first of course
-  //console.log("background script received message");
-  //sendResponce({responce: "This is the answer"});
-  
+/**
+ * @description Provide the user with a notification message informing them of an issue. Note that the arguments are what must be in the request object for this "call" case
+ * @param {string} title The title of the alert for the user
+ * @param {string} msg The message to display to the user
+ * @param {boolean} true -> pop-up window with full html, css, and js support. false-> browser notification API that implements a small OS notificaiton
+ */
   if (request.data.call == "alertUser"){
     if (request.type){
       var notify = browser.notifications.create("Hello World", {
@@ -32,6 +40,7 @@ function handleCrossScriptMessage(request, sender, sendResponce){
        }); */
     return true;
   }
+  //Write to storage.local
   else if (request.data.call === "writeDBLocalStorage"){
     browser.storage.local.set(request.data).then( () => { //Successfully wrote the data
       sendResponce({responce: true}); //Confirm data write success to CS
@@ -39,6 +48,7 @@ function handleCrossScriptMessage(request, sender, sendResponce){
     });
   return true;
   }
+  //Read from storage.local
   else if (request.data.call === "readDBLocalStorage") {
     //Data is stored in two lists where domains[n] = owners[n]
     //This is required for the API to work as intended
@@ -53,25 +63,6 @@ function handleCrossScriptMessage(request, sender, sendResponce){
     return true;
   }
 
-}
-/**
- * @description Provide the user with an error message informing them of an issue.
- * @param {string} title The title of the alert for the user
- * @param {string} msg The message to display to the user
- * @param {boolean} true -> pop-up window with full html, css, and js support. false-> browser notification API that implements a small OS notificaiton
- */
-function alertUser(request, sender, sendResponce){
-    
-}
-
-function output(contents){
-  //console.log(contents);
-  console.log(contents);
-}
-function readLocalWhiteList(request, sender, sendResponce){
-  
-
-  //var responding = browser.runtime.sendMessage({responce: storedData.data}).then(handle)
 }
 
 browser.runtime.onMessage.addListener(handleCrossScriptMessage);

@@ -1,3 +1,9 @@
+/**
+ * @description Sends a message to alert the user with a GUI element
+ * @param {string} title Title of the GUI alert
+ * @param {string} message Text content of the GUI alert
+ * @param {boolean} popup Creates a pop-up alert if value true, and an operating system notification from the browser if false
+ */
 function msgUser(title, message, popup){
     var sending = browser.runtime.sendMessage({
         call: "alertUser",
@@ -8,30 +14,37 @@ function msgUser(title, message, popup){
     sending.then(handleResponce, handleError)
 }
 
-function handleError(error){
-    console.log(error); //Alert not displayed
-}
 
-function writeDBLocalStorage(domains, owners){
+/**
+ * @description Sends a message to write to local.storage with two lists for which domainsList[n] = ownersList[n] s.t. the owner of domainsList[n] is the owner at ownersList[n]
+ * @param {[string]} domainsList list of domains
+ * @param {[string]} ownersList list of owners of domains1
+ */
+function writeDBLocalStorage(domainsList, ownersList){
     var sending = browser.runtime.sendMessage({
-        //call: "writeDBLocalStorage",
-        //Maybe replace the keys with an array of domains
-        data: {call: "writeDBLocalStorage", domains: ["google.com", "apple.com", "hofstra.edu"], owners: ["google", "apple", "hofstra"]},
-    });
+        data: {call: "writeDBLocalStorage", domains: domainsList, owners: ownersList}});
     sending.then(handleWriteSuccess, handleErrorLocalDB);
 }
+/**
+ * @description Sends a message to read the contents of local.storage. Then either pass the data to handleReadData or calls handleErrorLocalDB if an issue is encountered
+ * @returns {boolean} Async request  
+ */
 function readDBLocalStorage(){
-    var sending = browser.runtime.sendMessage({
-        //call: "writeDBLocalStorage",
-        //Maybe replace the keys with an array of domains
-        data: {call: "readDBLocalStorage"}
-    });
+    var sending = browser.runtime.sendMessage({ data: {call: "readDBLocalStorage"} });
     sending.then(handleReadData, handleErrorLocalDB);
     return true;
 }
 
-//Call backs for local storage message
+//Call back functions for readDBLocalStorage and writeDBLocalStorage
+
+
+/**
+ * @description Called when data is read successfully by readDBLocalStorage
+ * @param {Object} message A JS object with the contents that were send by sendResponce(obj)
+ * @returns {boolean} success?  
+ */
 function handleReadData(message){
+    
     console.log("Domains: " + message.responce.domains);
     console.log("Owners: " + message.responce.owners);
     return true;
@@ -40,15 +53,28 @@ function handleErrorLocalDB(error){
     console.log("Error: " + error);
     return true;
 }
+/**
+ * @description Called when data is read successfully by readDBLocalStorage
+ * @param {boolean} msg Did the write succeed?
+ * @returns {boolean} Processing Success?
+ */
 function handleWriteSuccess(msg){
     console.log("Wrote: " + msg)
     return true;
 }
+function handleError(error){
+    console.log(error);
+}
 
-var exampleData = {"google":"google.com", "apple" :"apple.com"};
-//writeDBLocalStorage(exampleData);
-readDBLocalStorage();
-//DEMO FUNCTIONS
+
+//DEMO FUNCTIONS STORAGE
+var exampleDomList = ["google.com", "apple.com", "hofstra.edu"];
+var exampleOwnerList = ["google", "apple", "hofstra"];
+
+//writeDBLocalStorage(exampleDomList, exampleOwnerList);
+//readDBLocalStorage();
+
+//DEMO FUNCTIONS ALERTS
 //msgUser("Hello World", "This is the message", true); //Example
 //msgUser("Notification from Firefox", "This is the message from firefox", false); //Example
 
