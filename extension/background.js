@@ -17,10 +17,10 @@ function handleCrossScriptMessage(request, sender, sendResponce){
  */
   if (request.data.call == "alertUser"){
     if (request.type){
-      var notify = browser.notifications.create("Hello World", {
+      var notify = browser.notifications.create(request.data.title, {
           "type": "basic",
-          "title": request.title,
-          "message": request.msg
+          "title": request.data.title,
+          "message": request.data.msg
       });
      }
      else {
@@ -33,13 +33,7 @@ function handleCrossScriptMessage(request, sender, sendResponce){
      let troubleshootingWindow = browser.windows.create(panelInfo);
      }
      return true;
-     /* browser.tabs.create({url: "troubleshooting.html"}).then(() => {
-         browser.tabs.executeScript({
-           code: `console.log('location:', window.location.href);`
-         });
-       }); */
-    return true;
-  }
+    }
   //Write to storage.local
   else if (request.data.call === "writeDBLocalStorage"){
     browser.storage.local.set(request.data).then( () => { //Successfully wrote the data

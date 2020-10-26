@@ -6,14 +6,15 @@
  */
 function msgUser(title, message, popup){
     var sending = browser.runtime.sendMessage({
-        call: "alertUser",
-        title: title,
-        msg: message,
-        type: popup
+        data: {
+            call: "alertUser",
+            title: title,
+            msg: message,
+            type: popup
+        }
     });
     sending.then(handleResponce, handleError)
 }
-
 
 /**
  * @description Sends a message to write to local.storage with two lists for which domainsList[n] = ownersList[n] s.t. the owner of domainsList[n] is the owner at ownersList[n]
@@ -53,6 +54,23 @@ function handleErrorLocalDB(error){
     console.log("Error: " + error);
     return true;
 }
+//HandleResponce and HandleError are generic callbacks for non-essential responces
+function handleResponce(msg){
+    console.log(msg);
+    return true
+}
+function handleError(err){
+    console.log(err);
+    return true;
+}
+
+function troubleshoot(){
+    msgUser("Error", "An error has occurred, please click the Trawler extension icon to learn more", false);
+    //var sending = browser.runtime.sendMessage({data: {call: "troubleshoot"}});
+    //sending.then(handleResponce, handleError);
+}
+
+troubleshoot()
 /**
  * @description Called when data is read successfully by readDBLocalStorage
  * @param {boolean} msg Did the write succeed?
