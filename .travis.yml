@@ -1,8 +1,8 @@
 before_install:
-  sudo apt-get update
-  sudo apt-get install -y nodejs npm
-  cd extension
-  npm install
+  - sudo apt-get update
+  - sudo apt-get install -y nodejs npm
+  - cd extension
+  - npm install
 language: node_js
 node_js:
   14
