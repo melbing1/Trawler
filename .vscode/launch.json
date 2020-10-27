@@ -1,12 +1,33 @@
 {
+    "version": "0.2.0",
     "configurations": [
-    {
+        {
+            "command": "npm start",
+            "name": "Run npm start",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "npm test",
+            "name": "Run npm test",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
         "type": "firefox",
         "request": "launch",
         "reAttach": true,
         "name": "Launch Firefox with Trawler",
         "file": "${workspaceFolder}/index.html",
         "addonPath": "${workspaceFolder}/extension"
-    }
-]
+        },
+        {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "name": "Launch Firefox with Troubleshooting Page",
+            "file": "${workspaceFolder}/extension/troubleshooting.html",
+            "addonPath": "${workspaceFolder}/extension"
+        }
+    ]
 }

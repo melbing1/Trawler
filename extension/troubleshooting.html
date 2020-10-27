@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="troubleshooting.css"
+              
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Trawler</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <!-- Define each of the links for kinds of problems -->
+                        <li class="active"><a href="#">Home</a></li>
+                        <li class="active"><a href="#">Connection</a></li>
+                        <li class="active"><a href="#">Extension Error</a></li>
+                        <li class="active"><a href="#">Database Issue</a></li>
+                        <li class="active"><a href="#">Other</a></li>
+                        <li class="active"><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-sm-2 sidenav">
+                    <p class="sidebar-text-color">
+                        <h2>Common Problems:</h2> <br>
+                        1. No Network Connection <br>
+                        <hr>
+                        <h2>Common Fixes:</h2> <br>
+                        1. Connect to the internet
+                    </p>                    
+                </div>
+                <div class="col-sm-8 text-left">
+                    <h1 class="custom-title">Troubleshooting</h1>
+                    <p class="custom-troubleshooting-info">
+                        <!--PLEASE ONLY ADD TROUBLESHOOTING INFORMATION TO THIS SECTION dynamically to avoid issues with bootstrap -->
+                        <p class="custom-info">An issue has occurred that prevented the Trawler extension from working properly.<br>
+                        Please try one of the tabs above based on the error that you receiver to try to fix extension issues
+                        </p>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        <footer class="container-fluid text-center">
+            <p>Contact Us</p>
+        </footer>
+    </body>
+</html>

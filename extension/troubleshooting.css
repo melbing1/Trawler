@@ -1,0 +1,36 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+.row.content {height: 500px;}
+.sidenav {
+    padding-top: 20px;
+    background-color: #0000008a;
+    height: 100%;
+}
+footer {
+    background-color: #FFFFFF;
+    color: black; /* Text color */
+    padding: 15px;
+}
+@media screen and (max-width: 767px) {
+    .sidenav {
+        height: auto;
+        padding: 15px;
+    }
+    .row.content {height: auto;}
+}
+.custom-title {
+    text-align: center;
+}
+.sidebar-text-color {
+    color: white;
+    font-size: large;
+    padding-left: 0%;
+    padding-right: 10%;
+}
+.custom-info {
+    padding-top: 5%;
+    text-align: center;
+    font-size: medium;
+}

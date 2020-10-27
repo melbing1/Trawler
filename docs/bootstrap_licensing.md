@@ -1,0 +1,2 @@
+Troubleshooting and TrawlerInfo pages are utilizing bootstrap templates as a starting place. These bootstrap templates are used as the base for creating the Troubleshooting and TrawlerInfo pages. These templates are provided free of charge and have no limitiations on usage.
+https://www.w3schools.com/bootstrap/bootstrap_templates.asp

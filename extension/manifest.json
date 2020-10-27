@@ -1,15 +1,30 @@
 {
+	"browser_action": {
+		"browser_style": true,
+		"default_title": "Trawler",
+		"default_icon": "fish.jpg",
+		"default_popup": "TrawlerInfo.html"
+	},
 	"manifest_version": 2,
 	"name": "Trawler",
 	"version": "1.0",
 	"description": "An antiphishing firefox extension",
+	"main": "main.js",
 	"content_scripts": [
 		{
 		"matches": ["<all_urls>"],
-		"js": ["main.js"]
+		"js": ["content_scripts/content_script.js"]
 		}
 	],
+	"background": {
+		"scripts": ["background.js"]
+	},
 	"permissions": [
-		"<all_urls>"
+		"<all_urls>",
+		"activeTab",
+		"tabs",
+		"notifications",
+		"storage",
+		"unlimitedStorage"
 	]
 }
