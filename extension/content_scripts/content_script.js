@@ -70,7 +70,6 @@ function troubleshoot(){
     //sending.then(handleResponce, handleError);
 }
 
-troubleshoot()
 /**
  * @description Called when data is read successfully by readDBLocalStorage
  * @param {boolean} msg Did the write succeed?
@@ -83,7 +82,6 @@ function handleWriteSuccess(msg){
 function handleError(error){
     console.log(error);
 }
-
 
 //DEMO FUNCTIONS STORAGE
 var exampleDomList = ["google.com", "apple.com", "hofstra.edu"];
