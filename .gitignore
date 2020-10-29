@@ -2,3 +2,4 @@
 .DS_Store
 extension/node_modules/
 artifacts/
+extension/web-ext-artifacts/

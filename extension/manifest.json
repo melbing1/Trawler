@@ -9,7 +9,6 @@
 	"name": "Trawler",
 	"version": "1.0",
 	"description": "An antiphishing firefox extension",
-	"main": "main.js",
 	"content_scripts": [
 		{
 		"matches": ["<all_urls>"],

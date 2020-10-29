@@ -1,3 +1,3 @@
 #!/usr/bin/env zsh
 
-web-ext build #Requires the npm web-ext module to be installed
+web-ext build --overwrite-dest #Requires the npm web-ext module to be installed
