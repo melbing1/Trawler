@@ -1,3 +1,7 @@
+//PLEASE RESET THE whoIsResponce VALUE TO NULL AFTER  IT IS READ S.T. IT DOES NOT GIVE MISLEADING DATA
+whoIsResponce = null; //Boolean value after getRegistrantOf() is called; true if the registerant and the compareTo are equal, else otherwise
+
+
 /**
  * @description Sends a message to alert the user with a GUI element
  * @param {string} title Title of the GUI alert
@@ -117,7 +121,7 @@ var exampleOwnerList = ["google", "apple", "hofstra"];
  * @param {function} successCallback Called on async success
  * @param {function} FailureCallback Called on aysnc failure
  */
-function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
+function getRegistrationOf(domain, compareTo, success, failure, sendResponce) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
@@ -162,11 +166,11 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     Callback function for the whois asychronous execution where the api data (when and if received) is processed
     IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
 */
-function WhoisDataProcessing(registrant, compareTo){
-    /*
-
-    */
-    //console.log(registrant);
+//TODO: Set boolean in this script to global var to be used in this script
+function WhoisDataProcessing(registrant, compareTo, sendResponce){
+    localWhoIsResponce = registrant == compareTo;
+    whoIsResponce = localWhoIsResponce
+    sendResponce({data: localWhoIsResponce});
     return registrant == compareTo;
 }
 
@@ -175,24 +179,24 @@ function WhoisDataProcessing(registrant, compareTo){
  * @param {number} status The HTTP GET status string 
  * @param {JSON} jsonData The raw JSON data of the request if it exists.
  */
-function handleRequestRejection(status, jsonData) { //Error handler for WHOIS requests
+function handleRequestRejection(status, jsonData, sendResponce) { //Error handler for WHOIS requests
     //The API is down or unreachable
     if (status == 404) { 
         //alertUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
         console.log("API was unreachable")
+        sendResponce({data: "unreachable"});
         return
     }
     if (jsonData == null || jsonData.toString == "")
         //alertUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
         console.log("placeholder");
-    
-
-
-
-    /*console.log(status.status)
-    //PLACEHOLDER ERROR HANDLING
-    console.log("Failed to get registration data");
-    console.log("Request Status: " + status);
-    console.log("Request Response JSON: " + jsonData); */
+        sendResponce({data: "no json data received"});
 }
 
+function handleBackgroundScriptMessage(request, sender, sendResponce){
+    if (request.data.call = "whois"){
+        getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
+    }
+}
+
+browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
