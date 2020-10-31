@@ -74,7 +74,6 @@ function troubleshoot(){
     //sending.then(handleResponce, handleError);
 }
 
-troubleshoot()
 /**
  * @description Called when data is read successfully by readDBLocalStorage
  * @param {boolean} msg Did the write succeed?
