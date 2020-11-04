@@ -194,6 +194,7 @@ function handleRequestRejection(status, jsonData, sendResponce) { //Error handle
 
 function handleBackgroundScriptMessage(request, sender, sendResponce){
     if (request.data.call = "whois"){
+        console.log("Got the message");
         getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
     }
 }
