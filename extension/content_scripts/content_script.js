@@ -198,4 +198,23 @@ function handleBackgroundScriptMessage(request, sender, sendResponce){
     }
 }
 
+validate("google.com"); //TEST 
+function validate(domain){
+  //TODO: Add all other validation options before WHOIS API call
+
+  //TODO: Test this msg call and ensure that you can get result back to background.js
+  var sending = browser.runtime.sendMessage({ data: {call: "whois", domain: domain}}); //Calls WHOIS API in the content_scipt
+  sending.then(apiSucess, apiError);
+  return true;
+}
+
+function apiSucess(msg){
+  console.log(msg);
+  return msg;
+}
+function apiError(err){
+  console.log(err);
+  return err;
+}
+
 browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
