@@ -59,5 +59,4 @@ function handleCrossScriptMessage(request, sender, sendResponce){
 
 }
 
-
 browser.runtime.onMessage.addListener(handleCrossScriptMessage);

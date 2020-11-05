@@ -1,4 +1,5 @@
 //PLEASE RESET THE whoIsResponce VALUE TO NULL AFTER  IT IS READ S.T. IT DOES NOT GIVE MISLEADING DATA
+//Please compare domains to the `whoIsResponce` var to check validity
 whoIsResponce = null; //Boolean value after getRegistrantOf() is called; true if the registerant and the compareTo are equal, else otherwise
 
 
@@ -120,7 +121,7 @@ var exampleOwnerList = ["google", "apple", "hofstra"];
  * @param {function} successCallback Called on async success
  * @param {function} FailureCallback Called on aysnc failure
  */
-function getRegistrationOf(domain, compareTo, success, failure, sendResponce) { //Gets JSON data about a domain from the public record
+function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
@@ -166,11 +167,11 @@ function getRegistrationOf(domain, compareTo, success, failure, sendResponce) { 
     IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
 */
 //TODO: Set boolean in this script to global var to be used in this script
-function WhoisDataProcessing(registrant, compareTo, sendResponce){
-    localWhoIsResponce = registrant == compareTo;
-    whoIsResponce = localWhoIsResponce
-    sendResponce({data: localWhoIsResponce});
-    return registrant == compareTo;
+function WhoisDataProcessing(domain, compareTo){
+    if (domain == compareTo) {
+        //CONTINUE TO THE WEBSITE SINCE THE DOMAIN AND COMPARETO MATCH
+        console.log("MATCH!");
+    }  
 }
 
 /**
@@ -192,29 +193,34 @@ function handleRequestRejection(status, jsonData, sendResponce) { //Error handle
         sendResponce({data: "no json data received"});
 }
 
-function handleBackgroundScriptMessage(request, sender, sendResponce){
-    if (request.data.call = "whois"){
-        getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
-    }
+// function handleBackgroundScriptMessage(request, sender, sendResponce){
+//     if (request.data.call = "whois"){
+//         getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
+//     } 
+// }
+
+function sleepFor(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-validate("google.com"); //TEST 
-function validate(domain){
+async function sleep(ms){
+    await sleepFor(ms);
+}
+console.log(validate("google.com", "google.com")); //TEST 
+
+/**
+ * @description Validate a domain as legitament
+ * @param {string} domain The domain which is being connected to
+ * @param {string} compareTo The suspected domain owner -> should match the domain argument
+ * @returns {boolean} True if the domain matchs the suspected owner
+ * 
+ * Return after each call if it is able to verify the   
+ */
+function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
-
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  var sending = browser.runtime.sendMessage({ data: {call: "whois", domain: domain}}); //Calls WHOIS API in the content_scipt
-  sending.then(apiSucess, apiError);
-  return true;
+  getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+  return false;
 }
 
-function apiSucess(msg){
-  console.log(msg);
-  return msg;
-}
-function apiError(err){
-  console.log(err);
-  return err;
-}
-
-browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
+//browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
