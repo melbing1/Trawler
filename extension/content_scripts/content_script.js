@@ -170,7 +170,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 function WhoisDataProcessing(domain, compareTo){
     if (domain == compareTo) {
         //CONTINUE TO THE WEBSITE SINCE THE DOMAIN AND COMPARETO MATCH
-        console.log("MATCH! Do not block the request!");
+        console.log("MATCH! UNBLOCK THE REQUEST!");
     }  
 }
 
@@ -217,12 +217,15 @@ validate("google.com", "google"); //TEST
  * @param {string} compareTo The suspected domain owner -> should match the domain argument
  * @returns {boolean} True if the domain matchs the suspected owner
  * 
- * Return after each call if it is able to verify the   
+ * The WHOIS request should be done asynchoniously since it takes time, this means it can not be 
+ * blocking the connection. Other validate functions might be fast enough to run while the connection is
+ * blocked. Connection blocking should be avoided if possible since it will impact performance.
  */
 function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+  getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
+  console.log("BLOCK CONNECTION HERE");
   return false;
 }
 
