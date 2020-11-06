@@ -168,6 +168,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 */
 //TODO: Set boolean in this script to global var to be used in this script
 function WhoisDataProcessing(domain, compareTo){
+    console.log("SUCESS CALLBACK");
     if (domain == compareTo) {
         //CONTINUE TO THE WEBSITE SINCE THE DOMAIN AND COMPARETO MATCH
         console.log("MATCH!");
@@ -179,18 +180,21 @@ function WhoisDataProcessing(domain, compareTo){
  * @param {number} status The HTTP GET status string 
  * @param {JSON} jsonData The raw JSON data of the request if it exists.
  */
-function handleRequestRejection(status, jsonData, sendResponce) { //Error handler for WHOIS requests
+function handleRequestRejection(status, jsonData) { //Error handler for WHOIS requests
     //The API is down or unreachable
     if (status == 404) { 
         //alertUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
         console.log("API was unreachable")
-        sendResponce({data: "unreachable"});
+        //sendResponce({data: "unreachable"});
         return
     }
     if (jsonData == null || jsonData.toString == "")
         //alertUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
         console.log("placeholder");
-        sendResponce({data: "no json data received"});
+        //sendResponce({data: "no json data received"});
+    else {
+        troubleshoot() //Something unknown happened
+    }
 }
 
 // function handleBackgroundScriptMessage(request, sender, sendResponce){
@@ -199,14 +203,14 @@ function handleRequestRejection(status, jsonData, sendResponce) { //Error handle
 //     } 
 // }
 
-function sleepFor(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+// function sleepFor(ms){
+//     return new Promise(resolve => setTimeout(resolve, ms));
+// }
 
-async function sleep(ms){
-    await sleepFor(ms);
-}
-console.log(validate("google.com", "google.com")); //TEST 
+// async function sleep(ms){
+//     await sleepFor(ms);
+// }
+validate("google.com", "google"); //TEST 
 
 /**
  * @description Validate a domain as legitament
@@ -219,7 +223,7 @@ console.log(validate("google.com", "google.com")); //TEST
 function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+  getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
   return false;
 }
 
