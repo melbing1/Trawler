@@ -209,7 +209,7 @@ function siteList(domain){
 
         //create suggestion UI here
         //give the user a choice whether to continue to website or not
-    }  else {
+    } else {
         console.log("LC");
         if (confirm("This website is unknown to our databases and may be malicious. Do you still wish to proceed?")) {
             if (confirm("Would you like to add this website to your trusted websites?")){
