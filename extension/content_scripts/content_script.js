@@ -193,6 +193,36 @@ function handleRequestRejection(status, jsonData, sendResponce) { //Error handle
         sendResponce({data: "no json data received"});
 }
 
+function siteList(domain){
+    //Check if domain is found in whitelist
+    if(checkWhiteList(domain)){
+        console.log("LA");
+        return;
+    //Check if domain is found in blacklist    
+    } else if(checkBlackList(domain)) {
+        console.log("LB");
+        alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
+    //Check if domain was found in the similarity checker and offer suggestion if it is    
+    } else if (similarityCheck(domain) != null){
+        console.log("LF");
+        alert(domain + " is what you were trying to. \nDid you mean " + similarityCheck(domain) + "?");
+
+        //create suggestion UI here
+        //give the user a choice whether to continue to website or not
+    }  else {
+        console.log("LC");
+        if (confirm("This website is unknown to our databases and may be malicious. Do you still wish to proceed?")) {
+            if (confirm("Would you like to add this website to your trusted websites?")){
+                alert(domain + " added to trusted websites.")
+            }else{
+                alert(domain + " has not been added to trusted websites")
+            }
+        } else {
+            alert("Your connection to " + domain + " has been terminated")
+        }
+    }
+}
+
 // function handleBackgroundScriptMessage(request, sender, sendResponce){
 //     if (request.data.call = "whois"){
 //         getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
@@ -217,6 +247,7 @@ console.log(validate("google.com", "google.com")); //TEST
  * Return after each call if it is able to verify the   
  */
 function validate(domain, compareTo){
+  siteList(domain);
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
   getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
