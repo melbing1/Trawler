@@ -168,10 +168,9 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 */
 //TODO: Set boolean in this script to global var to be used in this script
 function WhoisDataProcessing(domain, compareTo){
-    console.log("SUCESS CALLBACK");
     if (domain == compareTo) {
         //CONTINUE TO THE WEBSITE SINCE THE DOMAIN AND COMPARETO MATCH
-        console.log("MATCH!");
+        console.log("MATCH! Do not block the request!");
     }  
 }
 
