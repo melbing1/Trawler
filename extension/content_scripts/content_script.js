@@ -206,7 +206,42 @@ function sleepFor(ms){
 async function sleep(ms){
     await sleepFor(ms);
 }
+
+
 console.log(validate("google.com", "google.com")); //TEST 
+
+function siteList(domain){
+    //Check if domain is found in whitelist
+    if(checkWhiteList(domain)){
+        console.log("LA");
+        return;
+    //Check if domain is found in blacklist    
+    } else if(checkBlackList(domain)) {
+        console.log("LB");
+        alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
+    //Check if domain was found in the similarity checker and offer suggestion if it is    
+    } else if (similarityCheck(domain) != null){
+        console.log("LF");
+        //give the user a choice whether to continue to website or not
+        if (confirm(domain + " is what you were trying to. \nDid you mean " + similarityCheck(domain) + "?")){
+             //go to fixed website
+        } else {
+            // go to regular website
+        }
+    } else {
+        console.log("LC");
+        if (confirm("This website is unknown to our databases and may be malicious. Do you still wish to proceed?")) {
+            if (confirm("Would you like to add this website to your trusted websites?")){
+                writeDBLocalStorage(domain, "unknown");
+                alert(domain + " added to trusted websites.")
+            }else{
+                alert(domain + " has not been added to trusted websites")
+            }
+        } else {
+            alert("Your connection to " + domain + " has been terminated")
+        }
+    }
+}
 
 /**
  * @description Validate a domain as legitament
@@ -219,7 +254,9 @@ console.log(validate("google.com", "google.com")); //TEST
 function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+  //getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+
+  //siteList("google.com");
   return false;
 }
 
