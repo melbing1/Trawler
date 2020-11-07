@@ -323,16 +323,17 @@ function siteList(domain){
 function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  //queryDb()
-  //similiartyChecker()
-  //getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+  var foundDomain = queryDB(domain);
+  if (foundDomain != true){
+    simCheck = similarityChecker(domain);
+    if(simCheck != true){
+        getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
+    }
+}
   return false;
 }
 var mydomain = "";
-var foundDomain = queryDB(mydomain);
-if (foundDomain != true){
-    similarityChecker(mydomain);
-}
+validate(mydomain);
 
 browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
 
