@@ -93,26 +93,6 @@ function handleError(error){
 var exampleDomList = ["google.com", "apple.com", "hofstra.edu"];
 var exampleOwnerList = ["google", "apple", "hofstra"];
 
-//writeDBLocalStorage(exampleDomList, exampleOwnerList);
-//readDBLocalStorage();
-
-//DEMO FUNCTIONS ALERTS
-//msgUser("Hello World", "This is the message", true); //Example
-//msgUser("Notification from Firefox", "This is the message from firefox", false); //Example
-
-//NOTE: This is currently a work in progress, comment out for the demo and show the comminication and webpages instead
-/*function getRegistrationOfDomain(request, sender, sendResponce) {
-    getRegistrationOf(domain, compareTo, 
-        success(domainStr, compareToStr) => { //Why is this still broken??
-            if (domainStr == compareToStr){ sendResponce({responce: "success"}); }},
-        failure(status, rawData) => { 
-            sendResponce({responce: "failure"});
-            handleRequestRejection();
-        }
-    );
-    sendResponce({responce: "success"}); //TODO: return correct code
-} */
-//browser.runtime.onMessage.addListener(getRegistrationOfDomain);
 
 /** 
  * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
@@ -124,7 +104,7 @@ var exampleOwnerList = ["google", "apple", "hofstra"];
 function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
+    let incorporation = ["llc", "inc", "corp", "university"];
 
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The API data loaded and can now be safely utilized
@@ -170,7 +150,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 function WhoisDataProcessing(domain, compareTo){
     if (domain == compareTo) {
         //CONTINUE TO THE WEBSITE SINCE THE DOMAIN AND COMPARETO MATCH
-        console.log("MATCH!");
+        console.log("MATCH! PHISH-FREE!");
     }  
 }
 
@@ -179,36 +159,22 @@ function WhoisDataProcessing(domain, compareTo){
  * @param {number} status The HTTP GET status string 
  * @param {JSON} jsonData The raw JSON data of the request if it exists.
  */
-function handleRequestRejection(status, jsonData, sendResponce) { //Error handler for WHOIS requests
+function handleRequestRejection(status, jsonData) { //Error handler for WHOIS requests
     //The API is down or unreachable
     if (status == 404) { 
         //alertUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
         console.log("API was unreachable")
-        sendResponce({data: "unreachable"});
+        //sendResponce({data: "unreachable"});
         return
     }
     if (jsonData == null || jsonData.toString == "")
         //alertUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
         console.log("placeholder");
-        sendResponce({data: "no json data received"});
+        //sendResponce({data: "no json data received"});
+    else {
+        troubleshoot() //Something unknown happened
+    }
 }
-
-// function handleBackgroundScriptMessage(request, sender, sendResponce){
-//     if (request.data.call = "whois"){
-//         getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
-//     } 
-// }
-
-function sleepFor(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function sleep(ms){
-    await sleepFor(ms);
-}
-
-
-console.log(validate("google.com", "google.com")); //TEST 
 
 function siteList(domain){
     //Check if domain is found in whitelist
@@ -249,15 +215,14 @@ function siteList(domain){
  * @param {string} compareTo The suspected domain owner -> should match the domain argument
  * @returns {boolean} True if the domain matchs the suspected owner
  * 
- * Return after each call if it is able to verify the   
+ * The WHOIS request should be done asynchoniously since it takes time, this means it can not be 
+ * blocking the connection. Other validate functions might be fast enough to run while the connection is
+ * blocked. Connection blocking should be avoided if possible since it will impact performance.
+ * 
  */
 function validate(domain, compareTo){
-  //TODO: Add all other validation options before WHOIS API call
-  //TODO: Test this msg call and ensure that you can get result back to background.js
-  //getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
-
-  //siteList("google.com");
+  getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
+  console.log("Waiting for a responce from the API...");
   return false;
 }
 
-//browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
