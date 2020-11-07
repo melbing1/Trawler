@@ -176,20 +176,38 @@ function handleRequestRejection(status, jsonData) { //Error handler for WHOIS re
     }
 }
 
-// function handleBackgroundScriptMessage(request, sender, sendResponce){
-//     if (request.data.call = "whois"){
-//         getRegistrationOf(request.domain, request.compareTo, WhoisDataProcessing, handleRequestRejection, sendResponce);
-//     } 
-// }
-
-// function sleepFor(ms){
-//     return new Promise(resolve => setTimeout(resolve, ms));
-// }
-
-// async function sleep(ms){
-//     await sleepFor(ms);
-// }
-validate("google.com", "google"); //TEST 
+function siteList(domain){
+    //Check if domain is found in whitelist
+    if(checkWhiteList(domain)){
+        console.log("LA");
+        return;
+    //Check if domain is found in blacklist    
+    } else if(checkBlackList(domain)) {
+        console.log("LB");
+        alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
+    //Check if domain was found in the similarity checker and offer suggestion if it is    
+    } else if (similarityCheck(domain) != null){
+        console.log("LF");
+        //give the user a choice whether to continue to website or not
+        if (confirm(domain + " is what you were trying to. \nDid you mean " + similarityCheck(domain) + "?")){
+             //go to fixed website
+        } else {
+            // go to regular website
+        }
+    } else {
+        console.log("LC");
+        if (confirm("This website is unknown to our databases and may be malicious. Do you still wish to proceed?")) {
+            if (confirm("Would you like to add this website to your trusted websites?")){
+                writeDBLocalStorage(domain, "unknown");
+                alert(domain + " added to trusted websites.")
+            }else{
+                alert(domain + " has not been added to trusted websites")
+            }
+        } else {
+            alert("Your connection to " + domain + " has been terminated")
+        }
+    }
+}
 
 /**
  * @description Validate a domain as legitament
@@ -208,4 +226,3 @@ function validate(domain, compareTo){
   return false;
 }
 
-//browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
