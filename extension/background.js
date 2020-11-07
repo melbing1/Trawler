@@ -48,15 +48,14 @@ function handleCrossScriptMessage(request, sender, sendResponce){
     //This is required for the API to work as intended
     var gettingData = browser.storage.local.get(); //Get stored data
     gettingData.then(storedData => { //Stored data has been loaded
-      var domainList = storedData.data.domains; //Get domains from loaded data 
-      var ownerList = storedData.data.owners; //Get owners from loaded data
+      var domainList = storedData.domains; //Get domains from loaded data 
+      var ownerList = storedData.owners; //Get owners from loaded data
       var responceObject = {domains: domainList, owners: ownerList} //Create an object with domains and owners for the content script
       sendResponce({responce: responceObject}); //Send list to content script
       return true; //async
     });
     return true;
   }
-
 }
 
 browser.runtime.onMessage.addListener(handleCrossScriptMessage);
