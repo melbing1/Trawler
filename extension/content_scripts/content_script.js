@@ -93,26 +93,6 @@ function handleError(error){
 var exampleDomList = ["google.com", "apple.com", "hofstra.edu"];
 var exampleOwnerList = ["google", "apple", "hofstra"];
 
-//writeDBLocalStorage(exampleDomList, exampleOwnerList);
-//readDBLocalStorage();
-
-//DEMO FUNCTIONS ALERTS
-//msgUser("Hello World", "This is the message", true); //Example
-//msgUser("Notification from Firefox", "This is the message from firefox", false); //Example
-
-//NOTE: This is currently a work in progress, comment out for the demo and show the comminication and webpages instead
-/*function getRegistrationOfDomain(request, sender, sendResponce) {
-    getRegistrationOf(domain, compareTo, 
-        success(domainStr, compareToStr) => { //Why is this still broken??
-            if (domainStr == compareToStr){ sendResponce({responce: "success"}); }},
-        failure(status, rawData) => { 
-            sendResponce({responce: "failure"});
-            handleRequestRejection();
-        }
-    );
-    sendResponce({responce: "success"}); //TODO: return correct code
-} */
-//browser.runtime.onMessage.addListener(getRegistrationOfDomain);
 
 /** 
  * @description Using the whois API at ip2whois.com the public record of the domain registrant is retrieved via an asynchronous get request.
@@ -124,7 +104,7 @@ var exampleOwnerList = ["google", "apple", "hofstra"];
 function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON data about a domain from the public record
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    let incorporation = ["llc", "inc", "corp", "university"]; //TODO: Extend this list if nessasary
+    let incorporation = ["llc", "inc", "corp", "university"];
 
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The API data loaded and can now be safely utilized
@@ -223,8 +203,6 @@ validate("google.com", "google"); //TEST
  * 
  */
 function validate(domain, compareTo){
-  //TODO: Add all other validation options before WHOIS API call
-  //TODO: Test this msg call and ensure that you can get result back to background.js
   getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
   console.log("Waiting for a responce from the API...");
   return false;
