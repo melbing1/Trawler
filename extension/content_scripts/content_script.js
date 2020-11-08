@@ -37,6 +37,11 @@ function readDBLocalStorage(){
     return true;
 }
 
+function trimUrl(url){
+    let hostnameStr = new URL(url).hostname;
+    return hostnameStr.replace("www.", "");
+}
+
 //Call back functions for readDBLocalStorage and writeDBLocalStorage
 
 /**
