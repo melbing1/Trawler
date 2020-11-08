@@ -20,7 +20,6 @@ function msgUser(title, message, popup){
     });
     sending.then(handleResponce, handleError)
 }
-
 /**
  * @description Sends a message to write to local.storage with two lists for which domainsList[n] = ownersList[n] s.t. the owner of domainsList[n] is the owner at ownersList[n]
  * @param {[string]} domainsList list of domains

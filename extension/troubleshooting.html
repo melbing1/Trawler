@@ -24,41 +24,28 @@
                     <ul class="nav navbar-nav">
                         <!-- Define each of the links for kinds of problems -->
                         <li class="active"><a href="#">Home</a></li>
-                        <li class="active"><a href="#">Connection</a></li>
-                        <li class="active"><a href="#">Extension Error</a></li>
-                        <li class="active"><a href="#">Database Issue</a></li>
-                        <li class="active"><a href="#">Other</a></li>
-                        <li class="active"><a href="#">Contact</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <div class="container-fluid text-center">
-            <div class="row content">
-                <div class="col-sm-2 sidenav">
-                    <p class="sidebar-text-color">
-                        <h2>Common Problems:</h2> <br>
-                        1. No Network Connection <br>
-                        <hr>
-                        <h2>Common Fixes:</h2> <br>
-                        1. Connect to the internet
-                    </p>                    
-                </div>
-                <div class="col-sm-8 text-left">
                     <h1 class="custom-title">Troubleshooting</h1>
                     <p class="custom-troubleshooting-info">
-                        <!--PLEASE ONLY ADD TROUBLESHOOTING INFORMATION TO THIS SECTION dynamically to avoid issues with bootstrap -->
                         <p class="custom-info">An issue has occurred that prevented the Trawler extension from working properly.<br>
-                        Please try one of the tabs above based on the error that you receiver to try to fix extension issues
+                        Please verify the following: <br>
+                    <ol class="custom-info">
+                        <li>You are connected to the internet </li>
+                        <li>You have not blocked access to Trawler server (this can also cause performance issues in some cases) </li>
+                        <li>You have given the extension the permission that it requested</li>
+                        <li>You are using an up-to-date version of Firefox</li>
+                    </ol>
                         </p>
                     </p>
-
-                </div>
             </div>
         </div>
         <footer class="container-fluid text-center">
-            <p>Contact Us</p>
+            <p id="contact-id">Contact Us: <a rel="https://github.com/melbing1/Trawler/issues">Github</a></p>
         </footer>
     </body>
 </html>
