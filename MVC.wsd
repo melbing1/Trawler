@@ -2,12 +2,13 @@
 
 allowmixing
 
-namespace model #DDDDDD {
-    database remoteDatabase
-    class localDatabase
+namespace model #FF8888 {
+    database RemoteDatabase
+    class LocalDatabase
+    remoteDatabase <|--|> localDatabase
 }
 
-namespace controller {
+namespace controller #88FF88{
     class Trawler {
         Local extension is the controller for the MVC model
         ~invokeWhitelistCheck()
@@ -17,7 +18,7 @@ namespace controller {
     }
 }
 
-namespace view {
+namespace view #8888FF {
     class toolbarInterface
     class extensionWebpage
 }
