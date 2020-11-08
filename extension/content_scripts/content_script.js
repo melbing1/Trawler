@@ -80,7 +80,7 @@ function troubleshoot(){
  * @returns {boolean} Processing Success?
  */
 function handleWriteSuccess(msg){
-    console.log("Wrote: " + msg)
+    console.log("Write Success");
     return true;
 }
 function handleError(error){
@@ -108,7 +108,6 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The API data loaded and can now be safely utilized
         //Read the JSON response from the API within this function only due async execution
-
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response from the API and parse it into individual JSON objects
         let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
         
@@ -145,12 +144,17 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     Callback function for the whois asychronous execution where the api data (when and if received) is processed
     IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
 */
-//TODO: Set boolean in this script to global var to be used in this script
+getRegistrationOf("google.com", "google", WhoisDataProcessing, handleRequestRejection);
 function WhoisDataProcessing(domain, compareTo){
     if (domain == compareTo) {
-        //CONTINUE TO THE WEBSITE SINCE THE DOMAIN AND COMPARETO MATCH
         console.log("MATCH! PHISH-FREE!");
+        //NOTE: Do not show the user any information, the extension should not be intrusive when connected to a safe domain
     }  
+    else {
+        let currentDomain = document.location;
+        let warningStr = domain + " has registered " + currentDomain;
+        msgUser("Warning", warningStr, false);
+    }
 }
 
 /**
@@ -161,15 +165,11 @@ function WhoisDataProcessing(domain, compareTo){
 function handleRequestRejection(status, jsonData) { //Error handler for WHOIS requests
     //The API is down or unreachable
     if (status == 404) { 
-        //alertUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
-        console.log("API was unreachable")
-        //sendResponce({data: "unreachable"});
+        msgUser("API Unreachable", "WHOIS API was unreachable, heuristics are not being performed", true);
         return
     }
     if (jsonData == null || jsonData.toString == "")
-        //alertUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
-        console.log("placeholder");
-        //sendResponce({data: "no json data received"});
+        msgUser("Corrupt API Responce", "The registration data for this domain is not available or was corrupted in transit", true);
     else {
         troubleshoot() //Something unknown happened
     }
