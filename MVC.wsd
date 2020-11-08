@@ -1,0 +1,29 @@
+@startuml MVC
+
+allowmixing
+
+namespace model #DDDDDD {
+    database remoteDatabase
+    class localDatabase
+}
+
+namespace controller {
+    class Trawler {
+        Local extension is the controller for the MVC model
+        ~invokeWhitelistCheck()
+        ~invokeBlacklistCheck()
+        ~invokeSimilarCheck()
+        ~invokeWhoIsCheck()
+    }
+}
+
+namespace view {
+    class toolbarInterface
+    class extensionWebpage
+}
+
+
+
+BaseClass <|-- example
+
+@enduml
