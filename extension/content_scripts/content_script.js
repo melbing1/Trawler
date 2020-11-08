@@ -1,7 +1,4 @@
-//PLEASE RESET THE whoIsResponce VALUE TO NULL AFTER  IT IS READ S.T. IT DOES NOT GIVE MISLEADING DATA
-//Please compare domains to the `whoIsResponce` var to check validity
-whoIsResponce = null; //Boolean value after getRegistrantOf() is called; true if the registerant and the compareTo are equal, else otherwise
-
+troubleshootCounter = 0;
 
 /**
  * @description Sends a message to alert the user with a GUI element
@@ -42,7 +39,6 @@ function readDBLocalStorage(){
 
 //Call back functions for readDBLocalStorage and writeDBLocalStorage
 
-
 /**
  * @description Called when data is read successfully by readDBLocalStorage
  * @param {Object} message A JS object with the contents that were send by sendResponce(obj)
@@ -69,9 +65,9 @@ function handleError(err){
 }
 
 function troubleshoot(){
-    msgUser("Error", "An error has occurred, please click the Trawler extension icon to learn more", false);
-    //var sending = browser.runtime.sendMessage({data: {call: "troubleshoot"}});
-    //sending.then(handleResponce, handleError);
+    if (troubleshootCounter < 2) //Prevent multiple popups due to abnormal timings 
+        msgUser("Error", "An unknown error has occurred", true);
+    troubleshootCounter = troubleshootCounter + 1;
 }
 
 /**
