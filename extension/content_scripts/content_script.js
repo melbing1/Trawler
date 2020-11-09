@@ -335,11 +335,8 @@ function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
   //alert("location");
-  /*if(domain = "google.com"){
-    window.location.assign("http://www.mozilla.org") 
-    console.log(window.location);
-  }*/
-  reDirect(-1);
+  
+  //reDirect(-1);
   /*var foundDomain = queryDB(domain);
   if (foundDomain != true){
     simCheck = similarityChecker(domain);
