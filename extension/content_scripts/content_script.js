@@ -336,7 +336,7 @@ function validate(domain, compareTo){
   //TODO: Test this msg call and ensure that you can get result back to background.js
   //alert("location");
   
-  //reDirect(-1);
+  //reDirect("google.com");
   /*var foundDomain = queryDB(domain);
   if (foundDomain != true){
     simCheck = similarityChecker(domain);

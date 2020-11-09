@@ -67,12 +67,3 @@ function handleCrossScriptMessage(request, sender, sendResponce){
 }
 
 browser.runtime.onMessage.addListener(handleCrossScriptMessage);
-
-browser.tabs.onUpdated.addListener(handleUpdated);
-
-function handleUpdated(tabId, changeInfo, tabInfo) {
-  if (changeInfo.url) {
-    console.log("Tab: " + tabId +
-                " URL changed to " + changeInfo.url);
-  }
-}
