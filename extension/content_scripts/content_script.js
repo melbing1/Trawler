@@ -200,7 +200,9 @@ function similarityChecker(domain, success, failure){
         console.log(simCheck);
 
         if (simCheck.found == true){
-            alert("Did you mean to go to: " + simCheck.domain + "?");
+            if(confirm("Did you mean to go to: " + simCheck.domain + "?")){
+                //window.location.assign(simCheck.domain) 
+            } 
             console.log("Found similar domain");
         }
         else if (simCheck.found == false && simCheck.domain == "NULL"){
@@ -323,16 +325,19 @@ function siteList(domain){
 function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  var foundDomain = queryDB(domain);
+  //alert("location");
+  /*if(domain = "google.com"){
+    window.location.assign("http://www.mozilla.org") 
+    console.log(window.location);
+  }*/
+  browser.tabs.update({url: "https://developer.mozilla.org"});
+  /*var foundDomain = queryDB(domain);
   if (foundDomain != true){
     simCheck = similarityChecker(domain);
-    if(simCheck != true){
-        getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
-    }
-}
+}*/
   return false;
 }
-var mydomain = "";
+var mydomain = "google.com";
 validate(mydomain);
 
 browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
