@@ -55,6 +55,9 @@ function handleCrossScriptMessage(request, sender, sendResponce){
       return true; //async
     });
     return true;
+  } else if (request.data.call === "reDirectSite"){
+    //console.log(request.data.site);
+    browser.tabs.update({url: "https://" + request.data.site});
   }
 }
 

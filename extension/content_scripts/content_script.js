@@ -231,6 +231,14 @@ function similarityChecker(domain, success, failure){
 
 }
 
+function reDirect(domain){
+    console.log(domain);
+    var sending = browser.runtime.sendMessage({
+        data: {call: "reDirectSite", site: domain,}});
+    //sending.then(reDirectSite);
+    console.log("now here");
+}
+
 /*
     Callback function for the whois asychronous execution where the api data (when and if received) is processed
     IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
@@ -330,7 +338,7 @@ function validate(domain, compareTo){
     window.location.assign("http://www.mozilla.org") 
     console.log(window.location);
   }*/
-  browser.tabs.update({url: "https://developer.mozilla.org"});
+  reDirect(domain);
   /*var foundDomain = queryDB(domain);
   if (foundDomain != true){
     simCheck = similarityChecker(domain);
