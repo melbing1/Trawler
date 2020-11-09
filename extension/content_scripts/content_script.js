@@ -172,6 +172,7 @@ function queryDB(domain, success, failure) { //Gets JSON data about a domain fro
             foundDomain = true;
         }
         else if (response.trim() == "Found malicious domain"){
+            reDirect(-1);
             alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
             console.log("Found malicious domain");
             foundDomain = true;
@@ -201,7 +202,7 @@ function similarityChecker(domain, success, failure){
 
         if (simCheck.found == true){
             if(confirm("Did you mean to go to: " + simCheck.domain + "?")){
-                //window.location.assign(simCheck.domain) 
+                reDirect(simCheck.domain);
             } 
             console.log("Found similar domain");
         }
@@ -338,7 +339,7 @@ function validate(domain, compareTo){
     window.location.assign("http://www.mozilla.org") 
     console.log(window.location);
   }*/
-  reDirect(domain);
+  reDirect(-1);
   /*var foundDomain = queryDB(domain);
   if (foundDomain != true){
     simCheck = similarityChecker(domain);
