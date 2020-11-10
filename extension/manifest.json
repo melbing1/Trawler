@@ -2,7 +2,7 @@
 	"browser_action": {
 		"browser_style": true,
 		"default_title": "Trawler",
-		"default_icon": "fish.jpg",
+		"default_icon": "trawler-logo.png",
 		"default_popup": "TrawlerInfo.html"
 	},
 	"manifest_version": 2,

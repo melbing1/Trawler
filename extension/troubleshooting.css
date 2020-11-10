@@ -31,6 +31,9 @@ footer {
 }
 .custom-info {
     padding-top: 5%;
-    text-align: center;
-    font-size: medium;
+    text-align: left;
+    font-size: large;
+}
+#contact-id {
+    font-size: large;
 }

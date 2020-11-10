@@ -1,0 +1,81 @@
+@startuml MVC
+
+allowmixing
+
+namespace Model #FF8888 {
+    namespace Server #DDDDDD {
+        class RemoteServer {
+            Some processing is done on the remote server
+            ~similarityCheck()
+            ~checkBlackList()
+            ~checkWhiteList()
+        }
+        class RemoteDatabase {
+            -Blacklist
+            -WhiteList
+        }
+    }
+    class LocalDatabase {
+        -UserWhitelist
+        -Whitelist
+    }
+    Model.Server.RemoteDatabase <|--|> Model.LocalDatabase: HTTP
+    
+    class ExtensionLogic {
+        Local processing done on the extension
+        ~trimDomain()
+        ~siteList()
+        ~validate()
+        -listenForMessage()
+    }
+    class whoIsCheck {
+        Called by invokeWhoIsCheck from the model
+        -getRegistrantOf()
+        -successCallback()
+        -failureCallback()
+    }
+}
+
+namespace Controller #88FF88{
+    class Trawler {
+        The extension serves as the controller for the MVC model
+        ~invokeWhitelistCheck()
+        ~invokeBlacklistCheck()
+        ~invokeSimilarCheck()
+        ~invokeWhoIsCheck()
+        ~getURL()
+        -sendMessage()
+    }
+}
+
+namespace View #8888FF {
+    class toolbarInterface {
+        ~navbarAction
+    }
+    class TrawlerInfoPage {
+        -TrawlerInfo
+        -ContactInfo
+    }
+    class extensionWebpage {
+        This webpage serves only as a landing page
+        for the extension and is not visible in production
+        #TrawlerLandingPage
+    }
+    class troubleshootingPage {
+        Informational page for troubleshooting
+        Trawler issues or reporting bugs
+        -troubleshootingSteps
+        -issueReportingLink
+    }
+    abstract bootstrap {
+        -abstractBootstrapWebpage
+    }
+
+    toolbarInterface -> TrawlerInfoPage
+    bootstrap --|> troubleshootingPage
+}
+
+Model <--> Controller: invokeFunctions
+View <--> Controller: DisplayFunctions
+
+@enduml

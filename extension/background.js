@@ -16,7 +16,7 @@ function handleCrossScriptMessage(request, sender, sendResponce){
  * @param {boolean} true -> pop-up window with full html, css, and js support. false-> browser notification API that implements a small OS notificaiton
  */
   if (request.data.call == "alertUser"){
-    if (request.type){
+    if (request.data.type == false){
       var notify = browser.notifications.create(request.data.title, {
           "type": "basic",
           "title": request.data.title,
