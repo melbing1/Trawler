@@ -1,0 +1,13 @@
+@startuml whois
+    (*) -> [Domain] "Create API Request"
+    --> [HTTPS Request] "WHOIS Public Domain Registry"
+    --> [HTTPS Reponce] "JSON Registry Entry"
+    --> [JSON] "Parse registrant of domain"
+    --> [Domain] "Compare with asserted domain"
+    if "Registrant domain == Asserted Domain" then
+        --> [Do Nothing] (*)
+    else
+        --> [Warn user about domain registrant] "Alert user about the suspicious webpage and offer a redirect to previous page"
+        --> [User makes an informed how to procced] (*)
+    endif
+@enduml
