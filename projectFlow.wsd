@@ -1,13 +1,20 @@
-@startuml
-    (*) -> "Website Load"
+@startuml projectFlow
+    (*) --> "User Navigates to domain"
     -> [URL Load] "Parse domain from current URL"
     if "Local whitelist check" then
-        -> [pass] "Continue to webpage"
-        -> (*)
+        -> [pass] (*)
     else
-        -> [fail] "Check remote blacklist"
-        -> "Check remote whitelist" 
+        --> [fail] ===B1===
+        -> "Check remote blacklist"
+        -> "Check remote whitelist"
         -> "URL similarity Check"
-        --> [safeDomainResult] (*)
+        --> ===B2===
+        --> "WhoIs Domain Lookup"
+        --> ===B2===
+        if "Safe or Recognized Domain" then
+            --> [Continue to domain] (*)
+        else
+            --> [Phising/potential phising - ALERT USER] (*)
+        endif
     endif
 @enduml
