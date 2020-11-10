@@ -171,6 +171,7 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
         }
         else if (response.trim() == "Found malicious domain"){
             alert(domain + " is a known phishing site. Proceed with caution.");
+            //reDirect(-1);
             console.log("Found malicious domain");
             foundDomain = true;
         }
@@ -195,7 +196,9 @@ function similarityChecker(domain){
         console.log(simCheck);
 
         if (simCheck.found == true){
-            alert("Did you mean to go to: " + simCheck.domain + "?");
+            if(confirm("Did you mean to go to: " + simCheck.domain + "?")){
+                reDirect(simCheck.domain);
+            } 
             console.log("Found similar domain");
         }
         else if (simCheck.found == false && simCheck.domain == "NULL"){
@@ -207,6 +210,14 @@ function similarityChecker(domain){
         }
     }
     request.send();
+}
+
+function reDirect(domain){
+    console.log(domain);
+    var sending = browser.runtime.sendMessage({
+        data: {call: "reDirectSite", site: domain,}});
+    //sending.then(reDirectSite);
+    console.log("now here");
 }
 
 /*
@@ -266,6 +277,7 @@ function validate(domain, compareTo){
   //TODO: Test this msg call and ensure that you can get result back to background.js
 
   queryDB(domain);
+  //reDirect("google.com");
   if (foundDomain == false){
     console.log("Starting similiarity checker...");
     similarityChecker(domain);
