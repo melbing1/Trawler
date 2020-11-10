@@ -1,6 +1,7 @@
 //PLEASE RESET THE whoIsResponce VALUE TO NULL AFTER  IT IS READ S.T. IT DOES NOT GIVE MISLEADING DATA
 //Please compare domains to the `whoIsResponce` var to check validity
 whoIsResponce = null; //Boolean value after getRegistrantOf() is called; true if the registerant and the compareTo are equal, else otherwise
+foundDomain = false;
 
 /**
  * @description Sends a message to alert the user with a GUI element
@@ -90,7 +91,6 @@ function handleError(error){
 //DEMO FUNCTIONS STORAGE
 var exampleDomList = ["google.com", "apple.com", "hofstra.edu"];
 var exampleOwnerList = ["google", "apple", "hofstra"];
-var globalArray = [];
 
 //DEMO FUNCTIONS ALERTS
 //msgUser("Hello World", "This is the message", true); //Example
@@ -157,44 +157,39 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     request.send() //Request data via get query
 }
 
-function queryDB(domain, success, failure) { //Gets JSON data about a domain from the public record
-    let completeUrl = "http://localhost:1234/?domain=" + domain + "&simCheck=false&sendData=false"; //Create a complete query with the domain function argument
+function queryDB(domain) { //Gets JSON data about a domain from the public record
+    let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=false"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    var foundDomain = false;
 
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
-
+        console.log("Running DB Query");
         if (response.trim() == "Found safe domain"){
-            alert("Safe site");
             console.log("Found safe domain");
             foundDomain = true;
         }
         else if (response.trim() == "Found malicious domain"){
-            alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
+            alert(domain + " is a known phishing site. Proceed with caution.");
             console.log("Found malicious domain");
             foundDomain = true;
         }
         else{
-
+            console.log("error");
+            foundDomain = false;
         }
-        /*if (request.status === 200) success(registrant.trim()); //Return registrant organizion if we get an OK from the get request
-        else failure(request.status, response); //Call the handleRequestRejection function to alert the system (and user if needed) about the API issue
-        return;*/
     }
     request.send() //Request data via get query
-    return foundDomain;
 }
 
-function similarityChecker(domain, success, failure){
-    let completeUrl = "http://localhost:1234/?domain=" + domain + "&simCheck=true&sendData=false"; //Create a complete query with the domain function argument
+function similarityChecker(domain){
+    let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=true"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    var addNewSite = false;
 
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
+        console.log("Running similarity check");
         console.log("The response: " + response);
         var simCheck = JSON.parse(response.trim());
         console.log(simCheck);
@@ -204,29 +199,14 @@ function similarityChecker(domain, success, failure){
             console.log("Found similar domain");
         }
         else if (simCheck.found == false && simCheck.domain == "NULL"){
-            if (confirm("This website is unknown to our databases and may be malicious. Do you still wish to proceed?")) {
-                if (confirm("Would you like to add this website to your trusted websites?")){
-                    addNewSite = true;
-                    console.log(addNewSite);
-                }
+            console.log("Unknown site");
+            if (confirm("This website is unknown to our databases and may be malicious.")) {
             }
         }else{
-            //confirm("Site was not found. Add to whitelist?")
+            console.log("error");
         }
     }
     request.send();
-
-    if (addNewSite == true){
-        console.log("I am true!");
-        let newUrl = "http://localhost:1234/?domain=" + domain + "&appendSite=true&sendData=false";
-        let newRequest = new XMLHttpRequest() //Create Request
-        newRequest.open("GET", newUrl, true);
-        newRequest.onload = function (){
-            console.log("Added new website");
-        }
-        request.send();
-    }
-
 }
 
 /*
@@ -273,45 +253,6 @@ async function sleep(ms){
     await sleepFor(ms);
 }
 
-
-/*console.log(validate("google.com", "google.com")); //TEST 
-
-function siteList(domain){
-    //Check if domain is found in whitelist
-    if(checkWhiteList(domain)){
-        console.log("LA");
-        return;
-    //Check if domain is found in blacklist
-    } else if(checkBlackList(domain)) {
-        console.log("LB");
-        alert(domain + " is a known phishing site, For your safty we are stopping you from going there.");
-    //Check if domain was found in the similarity checker and offer suggestion if it is
-    } else {
-        simCheck = similarityCheck(domain);
-        if (simCheck != null){
-            console.log("LF");
-            //give the user a choice whether to continue to website or not
-            if (confirm(domain + " is what you were trying to. \nDid you mean " + simCheck + "?")){
-                //go to fixed website
-            } else {
-                // go to regular website
-            }
-        } else {
-            console.log("LC");
-            if (confirm("This website is unknown to our databases and may be malicious. Do you still wish to proceed?")) {
-                if (confirm("Would you like to add this website to your trusted websites?")){
-                    writeDBLocalStorage(domain, "unknown");
-                    alert(domain + " added to trusted websites.")
-                }else{
-                    alert(domain + " has not been added to trusted websites")
-                }
-            } else {
-                alert("Your connection to " + domain + " has been terminated")
-            }
-        }
-    }
-}*/
-
 /**
  * @description Validate a domain as legitament
  * @param {string} domain The domain which is being connected to
@@ -323,20 +264,15 @@ function siteList(domain){
 function validate(domain, compareTo){
   //TODO: Add all other validation options before WHOIS API call
   //TODO: Test this msg call and ensure that you can get result back to background.js
-  //queryDb()
-  //similiartyChecker()
+
+  queryDB(domain);
+  if (foundDomain == false){
+    console.log("Starting similiarity checker...");
+    similarityChecker(domain);
+  } 
   //getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
   return false;
 }
-var mydomain = "";
-var foundDomain = queryDB(mydomain);
-if (foundDomain != true){
-    similarityChecker(mydomain);
-}
-
+var mydomain = "hofstra.edu";
 browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
-
-
-//Block users?
-//Reroute users?
-//
+validate(mydomain);
