@@ -1,0 +1,17 @@
+{
+  "name": "nodeserver",
+  "version": "1.0.0",
+  "description": "Server to handle requests from Trawler extension",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "request": "^2.88.2",
+    "string-similarity": "^4.0.2"
+  }
+}
