@@ -41,9 +41,12 @@ function readDBLocalStorage(){
     return true;
 }
 
+function trimUrl(url){
+    var hostnameStr = new URL(url).hostname;
+    return hostnameStr.substring(hostnameStr.lastIndexOf(".", hostnameStr.lastIndexOf(".") - 1) + 1);
+}
+
 //Call back functions for readDBLocalStorage and writeDBLocalStorage
-
-
 /**
  * @description Called when data is read successfully by readDBLocalStorage
  * @param {Object} message A JS object with the contents that were send by sendResponce(obj)
@@ -170,8 +173,9 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
             foundDomain = true;
         }
         else if (response.trim() == "Found malicious domain"){
-            alert(domain + " is a known phishing site. Proceed with caution.");
-            //reDirect(-1);
+            if(confirm(domain + " is a known phishing site. Would you like to be redirected?")){
+                reDirect(-1);
+            }
             console.log("Found malicious domain");
             foundDomain = true;
         }
@@ -285,6 +289,9 @@ function validate(domain, compareTo){
   //getRegistrationOf(domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing`
   return false;
 }
-var mydomain = "hofstra.edu";
+var mydomain = trimUrl(document.location);
+console.log(trimUrl(document.location));
 browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
 validate(mydomain);
+
+
