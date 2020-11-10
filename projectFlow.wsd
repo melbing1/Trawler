@@ -1,0 +1,13 @@
+@startuml
+    (*) -> "Website Load"
+    -> [URL Load] "Parse domain from current URL"
+    if "Local whitelist check" then
+        -> [pass] "Continue to webpage"
+        -> (*)
+    else
+        -> [fail] "Check remote blacklist"
+        -> "Check remote whitelist" 
+        -> "URL similarity Check"
+        --> [safeDomainResult] (*)
+    endif
+@enduml
