@@ -1,13 +1,15 @@
 @startuml projectFlow
+   allowmixing
     (*) --> "User Navigates to domain"
     -> [URL Load] "Parse domain from current URL"
     if "Local whitelist check" then
         -> [pass] (*)
     else
         --> [fail] ===B1===
-        -> "Check remote blacklist"
-        -> "Check remote whitelist"
-        -> "URL similarity Check"
+
+        -> "DB: Check remote blacklist"
+        -> "DB: Check remote whitelist"
+        -> "DB: URL similarity Check"
         --> ===B2===
         --> "WhoIs Domain Lookup"
         --> ===B2===

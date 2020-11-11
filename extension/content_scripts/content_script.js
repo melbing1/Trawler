@@ -282,3 +282,10 @@ browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
 validate(mydomain);
 
 
+/*
+* NOTE: export for unit testing purposes only
+
+exports.getRegistrationOf = getRegistrationOf;
+exports.WhoisDataProcessing = WhoisDataProcessing;
+exports.handleRequestRejection = handleRequestRejection;
+*/
