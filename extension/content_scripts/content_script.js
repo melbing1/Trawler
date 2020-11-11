@@ -73,7 +73,7 @@ function handleError(err){
 }
 
 function troubleshoot(){
-    if (troubleshootCounter < 2) //Prevent multiple popups due to abnormal timings 
+    if (troubleshootCounter < 1) //Prevent multiple popups due to abnormal timings 
         msgUser("Error", "An unknown error has occurred", true);
     troubleshootCounter = troubleshootCounter + 1;
 }
@@ -106,13 +106,19 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     let incorporation = ["llc", "inc", "corp", "university"];
-
+    console.log(domain);
+    if (domain == "")
+        return;
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The API data loaded and can now be safely utilized
         //Read the JSON response from the API within this function only due async execution
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response from the API and parse it into individual JSON objects
-        let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
-        
+        try {
+            let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
+        }
+        catch {
+            failure("NO RESPONCE");
+        }
         registrant = registrant.toString().toLowerCase();
 
         //Remove periods and quotes from JSON data for consistency
@@ -162,6 +168,7 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
         }
         else{
             console.log("error");
+            similarityChecker(domain);
             foundDomain = false;
         }
     }
@@ -245,14 +252,6 @@ function handleBackgroundScriptMessage(request, sender, sendResponce){
     } 
  }
 
-function sleepFor(ms){
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-async function sleep(ms){
-    await sleepFor(ms);
-}
-
 /**
  * @description Validate a domain as legitament
  * @param {string} domain The domain which is being connected to
@@ -266,11 +265,7 @@ async function sleep(ms){
  */
 function validate(domain, compareTo){
   // Begin processing the domain from the request, if a domain is not found - execute similarity checker
-  queryDB(domain);
-  if (foundDomain == false){
-    console.log("Starting similiarity checker...");
-    similarityChecker(domain);
-  } 
+  queryDB(domain); 
   getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
   console.log("Waiting for a responce from the API...");
   return false;
