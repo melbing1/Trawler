@@ -75,7 +75,7 @@ namespace View #8888FF {
     bootstrap --|> troubleshootingPage
 }
 
-Model <--> Controller: invokeFunctions
-View <--> Controller: DisplayFunctions
+Model <---> Controller: invokeFunctions
+View <---> Controller: DisplayFunctions
 
 @enduml
