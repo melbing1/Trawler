@@ -107,7 +107,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     let incorporation = ["llc", "inc", "corp", "university"];
-    console.log(domain);
+    console.log("getReg");
     if (domain == "")
         return;
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
@@ -150,10 +150,12 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 }
 
 function queryDB(domain) { //Gets JSON data about a domain from the public record
+    console.log(domain);
     let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=false"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     console.log("QUERY");
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
+    //ONLOAD IS NEVERING BEING CALLED
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
         console.log("Running DB Query");
@@ -170,7 +172,7 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
         }
         else{
             console.log("error");
-            similarityChecker(domain); 
+            similarityChecker(domain);
             foundDomain = false;
         }
     }
@@ -178,9 +180,10 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
 }
 
 function similarityChecker(domain){
+    console.log("similaritycheck" + domain);
     let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=true"; //Create a complete query with the domain function argument
-    let request = new XMLHttpRequest() //Create Request
-
+    let request = new XMLHttpRequest(); //Create Request
+    console.log("similaritycheck");
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
@@ -270,6 +273,7 @@ function handleBackgroundScriptMessage(request, sender, sendResponce){
  */
 function validate(domain, compareTo){
   // Begin processing the domain from the request, if a domain is not found - execute similarity checker
+  console.log("validate start");
   queryDB(domain); //STEP 1
   return false;
 }
