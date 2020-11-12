@@ -153,7 +153,6 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
     console.log(domain);
     let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=false"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-    console.log("QUERY");
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
