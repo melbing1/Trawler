@@ -15,3 +15,5 @@ The Trawler Anti-Phising extension for Firefox helps prevent phishing attacks wh
 ---
 
 Please sumbit any issues you may have via the [Github issues](https://github.com/melbing1/Trawler/issues) page, thank you!
+
+(C) Kacper Baldyga, Brian Clampett, Matthew Elbing, Stephen Kurtis, John Ramirez, Peyton Tansey
