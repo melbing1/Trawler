@@ -2,6 +2,7 @@
 //Please compare domains to the `whoIsResponce` var to check validity
 whoIsResponce = null; //Boolean value after getRegistrantOf() is called; true if the registerant and the compareTo are equal, else otherwise
 foundDomain = false;
+abort = false; //Cancel the WHOIS API quert
 troubleshootCounter = 0;
 
 
@@ -113,8 +114,9 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     request.onload = function () { //The API data loaded and can now be safely utilized
         //Read the JSON response from the API within this function only due async execution
         let rawJson = JSON.parse(this.responseText); //Get raw JSON response from the API and parse it into individual JSON objects
+        let registrant = null;
         try {
-            let registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
+            registrant = JSON.stringify(rawJson.registrant.organization); //Get the registrant oranganization JSON object and convert it to a string
         }
         catch {
             failure("NO RESPONCE");
@@ -150,7 +152,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 function queryDB(domain) { //Gets JSON data about a domain from the public record
     let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=false"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
-
+    console.log("QUERY");
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
@@ -168,7 +170,7 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
         }
         else{
             console.log("error");
-            similarityChecker(domain);
+            similarityChecker(domain); 
             foundDomain = false;
         }
     }
@@ -190,15 +192,19 @@ function similarityChecker(domain){
         if (simCheck.found == true){
             if(confirm("Did you mean to go to: " + simCheck.domain + "?")){
                 reDirect(simCheck.domain);
+                getRegistrationOf(domain, simCheck.domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
             } 
             console.log("Found similar domain");
+
         }
         else if (simCheck.found == false && simCheck.domain == "NULL"){
             console.log("Unknown site");
             if (confirm("This website is unknown to our databases and may be malicious.")) {
+                getRegistrationOf(domain, null, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
             }
         }else{
             console.log("error");
+            getRegistrationOf(domain, null, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
         }
     }
     request.send();
@@ -216,7 +222,6 @@ function reDirect(domain){
     Callback function for the whois asychronous execution where the api data (when and if received) is processed
     IMPORTANT: All code that deals with data from the WHOIS API call must start within this function. Otherwise the data will NOT be accurate
 */
-getRegistrationOf("google.com", "google", WhoisDataProcessing, handleRequestRejection);
 function WhoisDataProcessing(domain, compareTo){
     if (domain == compareTo) {
         console.log("MATCH! PHISH-FREE!");
@@ -265,9 +270,7 @@ function handleBackgroundScriptMessage(request, sender, sendResponce){
  */
 function validate(domain, compareTo){
   // Begin processing the domain from the request, if a domain is not found - execute similarity checker
-  queryDB(domain); 
-  getRegistrationOf(domain, compareTo, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
-  console.log("Waiting for a responce from the API...");
+  queryDB(domain); //STEP 1
   return false;
 }
 
