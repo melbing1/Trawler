@@ -155,7 +155,6 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
     let request = new XMLHttpRequest() //Create Request
     console.log("QUERY");
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
-    //ONLOAD IS NEVERING BEING CALLED
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
         console.log("Running DB Query");
@@ -214,7 +213,7 @@ function similarityChecker(domain){
 }
 
 function reDirect(domain){
-    console.log(domain);
+    console.log("redirect");
     var sending = browser.runtime.sendMessage({
         data: {call: "reDirectSite", site: domain,}});
     //sending.then(reDirectSite);
