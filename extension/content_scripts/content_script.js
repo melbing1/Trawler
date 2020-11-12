@@ -121,7 +121,6 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
             failure("NO RESPONCE");
         }
         registrant = registrant.toString().toLowerCase();
-        console.log("getReg");
 
         //Remove periods and quotes from JSON data for consistency
         registrant = registrant.replace(".", "");
@@ -150,26 +149,21 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
 }
 
 function queryDB(domain) { //Gets JSON data about a domain from the public record
-    console.log(domain);
     let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=false"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
-        console.log("Running DB Query");
         if (response.trim() == "Found safe domain"){
-            console.log("Found safe domain");
             foundDomain = true;
         }
         else if (response.trim() == "Found malicious domain"){
             if(confirm(domain + " is a known phishing site. Would you like to be redirected?")){
                 reDirect(-1);
             }
-            console.log("Found malicious domain");
             foundDomain = true;
         }
         else{
-            console.log("error");
             similarityChecker(domain);
             foundDomain = false;
         }
@@ -178,33 +172,25 @@ function queryDB(domain) { //Gets JSON data about a domain from the public recor
 }
 
 function similarityChecker(domain){
-    console.log("similaritycheck" + domain);
     let completeUrl = "http://ec2-3-134-253-33.us-east-2.compute.amazonaws.com:1234/?domain=" + domain + "&simCheck=true"; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest(); //Create Request
-    console.log("similaritycheck");
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
     request.onload = function () { //The data loaded and can now be safely utilized
         let response = this.responseText; //Get raw response from the webserver
-        console.log("Running similarity check");
-        console.log("The response: " + response);
         var simCheck = JSON.parse(response.trim());
-        console.log(simCheck);
 
         if (simCheck.found == true){
             if(confirm("Did you mean to go to: " + simCheck.domain + "?")){
                 reDirect(simCheck.domain);
                 getRegistrationOf(domain, simCheck.domain, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
             } 
-            console.log("Found similar domain");
 
         }
         else if (simCheck.found == false && simCheck.domain == "NULL"){
-            console.log("Unknown site");
             if (confirm("This website is unknown to our databases and may be malicious.")) {
                 getRegistrationOf(domain, null, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
             }
         }else{
-            console.log("error");
             getRegistrationOf(domain, null, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
         }
     }
@@ -212,11 +198,9 @@ function similarityChecker(domain){
 }
 
 function reDirect(domain){
-    console.log("redirect");
     var sending = browser.runtime.sendMessage({
         data: {call: "reDirectSite", site: domain,}});
     //sending.then(reDirectSite);
-    console.log("now here");
 }
 
 /*
@@ -225,7 +209,6 @@ function reDirect(domain){
 */
 function WhoisDataProcessing(domain, compareTo){
     if (domain == compareTo) {
-        console.log("MATCH! PHISH-FREE!");
         //NOTE: Do not show the user any information, the extension should not be intrusive when connected to a safe domain
     }  
     else {
@@ -271,14 +254,12 @@ function handleBackgroundScriptMessage(request, sender, sendResponce){
  */
 function validate(domain, compareTo){
   // Begin processing the domain from the request, if a domain is not found - execute similarity checker
-  console.log("validate start");
   queryDB(domain); //STEP 1
   getRegistrationOf(domain, null, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
   return false;
 }
 
 var mydomain = trimUrl(document.location);
-console.log(trimUrl(document.location));
 browser.runtime.onMessage.addListener(handleBackgroundScriptMessage);
 validate(mydomain);
 

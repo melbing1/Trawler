@@ -56,10 +56,8 @@ function handleCrossScriptMessage(request, sender, sendResponce){
     });
     return true;
   } else if (request.data.call === "reDirectSite"){
-    //console.log(request.data.site);
     if(request.data.site == -1){
       browser.tabs.goBack();
-      //console.log("we made it here");
     } else {
       browser.tabs.update({url: "https://" + request.data.site});
     }
