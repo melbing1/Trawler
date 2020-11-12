@@ -107,7 +107,6 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
     let completeUrl = "https://api.ip2whois.com/v1?key=free&domain=" + domain; //Create a complete query with the domain function argument
     let request = new XMLHttpRequest() //Create Request
     let incorporation = ["llc", "inc", "corp", "university"];
-    console.log("getReg");
     if (domain == "")
         return;
     request.open("GET", completeUrl, true); //Open an async https connection for the given constructed URL
@@ -122,6 +121,7 @@ function getRegistrationOf(domain, compareTo, success, failure) { //Gets JSON da
             failure("NO RESPONCE");
         }
         registrant = registrant.toString().toLowerCase();
+        console.log("getReg");
 
         //Remove periods and quotes from JSON data for consistency
         registrant = registrant.replace(".", "");
