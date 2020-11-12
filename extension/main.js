@@ -3,7 +3,7 @@ Main Extension JS file. Most of the js extension code will be within this file u
 be placed elsewhere.
 
 main.js
-(c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
+(c) Kacper Baldyga, Brian Clampett, Matthew Elbing, Stephen Kurtis, John Ramirez, Peyton Tansey 2020
 
 */
 /*
