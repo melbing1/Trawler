@@ -1,30 +1,3 @@
-/*
-Main Extension JS file. Most of the js extension code will be within this file unless it serves a purpose that requires that it
-be placed elsewhere.
-
-main.js
-(c) Matthew Elbing, [ADD YOUR NAME HERE], 2020
-
-*/
-/*
-Example of Usage
-    validate("apple.com")
-        Do not include http/https or www etc.
-*/
-
-//NOTE: the require for xmlhttprequests is only nessasary for running unit tests, in the browser you do not need to require it
-//var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-
-//npm install string-similarity
-//var stringSimilarity = require('string-similarity');
-//alert("Hello World");
-//console.log("Greetings");
-
-// Hardcoded phishing site database (100 entries)
-
-
-//alertUser("Hello", "This is the world", true);
-
 const maliciousData = [
     {
         "domainId": 1,
