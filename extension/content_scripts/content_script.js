@@ -273,6 +273,7 @@ function validate(domain, compareTo){
   // Begin processing the domain from the request, if a domain is not found - execute similarity checker
   console.log("validate start");
   queryDB(domain); //STEP 1
+  getRegistrationOf(domain, null, WhoisDataProcessing, handleRequestRejection); //The response for this function call is handled in `WhoIsDataProcessing` 
   return false;
 }
 
